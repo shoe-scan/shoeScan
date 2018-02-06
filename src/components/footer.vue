@@ -5,18 +5,18 @@
   </div>
 </template>
 <script>
-  export default{
-
-  }
+  export default{}
 </script>
 <style scoped>
-  .bg-ff9402{
+  .bg-ff9402 {
     background-color: #ff9402;
   }
-  .bg-f40{
+
+  .bg-f40 {
     background-color: #f40;
   }
-  .size-17{
-    font-size:17px;
+
+  .size-17 {
+    font-size: 17px;
   }
 </style>

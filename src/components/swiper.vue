@@ -17,13 +17,14 @@
 
 </script>
 <style scoped>
-  .width-height-100{
-    width:100% !important;
-    height:0 !important;
-    padding-bottom:100% !important;
+  .width-height-100 {
+    width: 100% !important;
+    height: 0 !important;
+    padding-bottom: 100% !important;
   }
-  img{
+
+  img {
     display: block;
-    width:100%;
+    width: 100%;
   }
 </style>

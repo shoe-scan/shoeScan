@@ -49,34 +49,90 @@
           <span>数量</span>
         </div>
         <div class="table-cell app-item">
-          <span class="disabled appy-minus">-</span><span class="appy-qty" data-totalqty="0">1</span><span class="appy-add disabled">+</span>
+          <span class="disabled appy-minus">-</span><span class="appy-qty" data-totalqty="0">1</span><span
+          class="appy-add disabled">+</span>
         </div>
       </div>
-      <mt-cell
-        title="附近门店"
-        is-link
-        @click.native="goNearShop">
+      <mt-cell class="border-top-d9d9d9"
+               title="附近门店"
+               is-link
+               @click.native="goNearShop">
       </mt-cell>
+      <mt-cell class="border-top-d9d9d9"
+               title="你可能喜欢"
+               is-link
+               @click.native="goProductList">
+      </mt-cell>
+      <div class="dis-flex">
+        <div class="flex-1 width-33 padding-0-10" @click="goIndex">
+          <img src="https://i1.ygimg.cn/pics/tata/2017/100537031/100537031_01_mb.jpg?2" alt="">
+          <div class="padding-bottom-5">
+            牛皮革男皮鞋
+          </div>
+          <div class="app-sale-price">
+            &yen;2000
+          </div>
+        </div>
+        <div class="flex-1 width-33" @click="goIndex">
+          <img src="https://i1.ygimg.cn/pics/tata/2017/100537031/100537031_01_mb.jpg?2" alt="">
+          <div class="padding-bottom-5">
+            牛皮革男皮鞋
+          </div>
+          <div class="app-sale-price">
+            &yen;2000
+          </div>
+        </div>
+        <div class="flex-1 width-33" @click="goIndex">
+          <img src="https://i1.ygimg.cn/pics/tata/2017/100537031/100537031_01_mb.jpg?2" alt="">
+          <div class="padding-bottom-5">
+            牛皮革男皮鞋
+          </div>
+          <div class="app-sale-price">
+            &yen;2000
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 <script>
   export default{
-      methods:{
-        goNearShop(){
-            this.$router.push({
-              name:"nearShop",
-              params:{
-                shopNo:"CO07TT",
-                itemCode:"AA3T3537DU1CM7",
-                sizeNo:"240",
-                brandNo:"TT01",
-                shardingFlag:"U010101_C",
-                zoneNo:"C"
-              }
-            })
-        }
+    methods: {
+      goNearShop(){
+        this.$router.push({
+          name: "nearShop",
+          query: {
+            shopNo: "CO07TT",
+            itemCode: "AA3T3537DU1CM7",
+            sizeNo: "240",
+            brandNo: "TT01",
+            shardingFlag: "U010101_C",
+            zoneNo: "C"
+          }
+        })
+      },
+      goProductList(){
+        this.$router.push({
+          name: "productList",
+          query: {
+            itemNo: "20170606000001",
+            brandNo: "TT01",
+            shopNo: "CO33TT",
+            years: "20160729000001",
+            categoryNo: "010102",
+            season: "20141017000022",
+            zoneNo: "C",
+            gender: "20141017000029",
+            organTypeNo: "U010101",
+          }
+        })
+      },
+      goIndex(){
+        this.$router.push({
+          name: "index",
+        })
       }
+    },
   }
 </script>
 <style scoped>
@@ -98,9 +154,11 @@
     height: 3em;
     font-size: 14px;
   }
+
   .app-underline {
     position: relative;
   }
+
   .app-underline:after {
     content: '';
     position: absolute;
@@ -116,32 +174,40 @@
     -webkit-transform-origin: 50% 100%;
     transform-origin: 50% 100%;
   }
+
   .app-sale-price {
     color: #ef0717 !important;
     font-size: 16px;
     font-weight: 700;
   }
+
   .appy-border {
     border: 1px solid #2196f3;
     border-radius: 15px;
   }
+
   .app-pro-attr {
     padding-bottom: 8px;
   }
+
   .table {
     display: table;
   }
+
   .app-pro-attr .app-title {
     width: 50px;
   }
+
   .table-cell {
     display: table-cell;
   }
+
   .app-pro-attr .app-item span.active {
     color: #fff;
     background-color: #18b976;
     border-color: #18b976;
   }
+
   .app-pro-attr .app-item span {
     display: inline-block;
     width: auto;
@@ -149,14 +215,17 @@
     padding: 5px;
     background-color: #eee;
     border: 1px solid #d3d3d3;
-    border-radius:2px;
+    border-radius: 2px;
   }
+
   .app-pro-attr:last-child {
     padding-bottom: 0;
   }
+
   .app-pro-num .app-item span.disabled {
     color: #c8c8c8;
   }
+
   .app-pro-num .app-item span {
     width: 30px !important;
     height: 30px;
@@ -165,6 +234,7 @@
     padding: inherit;
     text-align: center;
   }
+
   .app-pro-attr .app-item span {
     display: inline-block;
     width: auto;
@@ -172,20 +242,35 @@
     background-color: #eee;
     border: 1px solid #d3d3d3;
   }
+
   .app-pro-attr .app-item span.active {
     color: #fff;
     background-color: #18b976;
     border-color: #18b976;
   }
-  .productInfo .mint-cell-wrapper{
-    padding-left:0 !important;
+
+  .productInfo .mint-cell-wrapper {
+    padding-left: 0 !important;
   }
-  .productInfo .mint-cell-allow-right:after{
+
+  .productInfo .mint-cell-allow-right:after {
     right: 15px !important;
     position: absolute;
     width: 10px;
     height: 10px;
     -webkit-transform: translateY(-50%) rotate(45deg);
     transform: translateY(-50%) rotate(45deg);
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+  }
+
+  .app-sale-price {
+    color: #ef0717 !important;
+    font-size: 16px;
+    font-weight: 700;
   }
 </style>
