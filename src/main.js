@@ -4,8 +4,10 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import Vuex from 'vuex';
-import {Checklist,Swipe, SwipeItem, Cell, TabContainer, TabContainerItem, Navbar, TabItem, Badge} from 'mint-ui';
+import {Swipe, SwipeItem, Cell, TabContainer, TabContainerItem, Navbar, TabItem, Badge, Checklist} from 'mint-ui';
 import "mint-ui/lib/style.min.css";
+import './assets/css/common.css';
+
 Vue.use(Vuex);
 import store from './store/store';
 Vue.component(Swipe.name, Swipe);
@@ -16,12 +18,12 @@ Vue.component(TabContainerItem.name, TabContainerItem);
 Vue.component(Navbar.name, Navbar);
 Vue.component(TabItem.name, TabItem);
 Vue.component(Badge.name, Badge);
-Vue.component(Checklist .name, Checklist);
+Vue.component(Checklist.name, Checklist);
 Vue.config.productionTip = false;
 new Vue({
   el: '#app',
   router,
   store,
-  components: { App },
+  components: {App},
   template: '<App/>'
 })
