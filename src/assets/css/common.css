@@ -91,6 +91,9 @@ html,body{
   height:100%;
   background: #efeff4;
 }
+.line-height-44 {
+  line-height: 44px;
+}
 .line-height-50 {
   line-height: 50px;
 }
@@ -103,6 +106,9 @@ html,body{
   color: #fff;
 }
 
+.cor-000 {
+  color: #000;
+}
 .cor-666 {
   color: #666;
 }
@@ -135,12 +141,20 @@ html,body{
 .margin-0-50 {
   margin: 0 50px;
 }
-
+.margin-left-10{
+  margin-left: 10px;
+}
 .margin-top-30 {
   margin-top: 30px;
 }
 .margin-bottom-10 {
   margin-bottom: 10px;
+}
+.padding-0{
+  padding: 0;
+}
+.padding-left-0 {
+  padding-left: 0
 }
 .padding-left-10 {
   padding-left: 10px;
@@ -151,6 +165,9 @@ html,body{
 }
 .padding-left-20 {
   padding-left: 20px;
+}
+.padding-right-0 {
+  padding-right: 0
 }
 .padding-right-10 {
   padding-right: 10px;
@@ -254,4 +271,29 @@ html,body{
   color: #ef0717 !important;
   font-size: 16px;
   font-weight: 700;
+}
+.mint-checkbox-input:checked+.mint-checkbox-core{
+  background-color: #F95B67;
+  border-color: #F95B67;
+}
+.app-checkbox-core:after{
+  top: 4px;
+  left: 7px;
+}
+.mint-cell-swipe-button{
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+}
+.app-cell-swipe .mint-cell-wrapper {
+  padding-right: 0;
+}
+.app-cell-swipe.mint-cell-swipe,
+.app-cell-swipe .mint-cell-value{
+  width: 100%;
+}
+.app-cell-swipe>.mint-cell-wrapper>.mint-cell-title{
+  display: none;
 }
