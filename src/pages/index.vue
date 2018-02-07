@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div class="padding-bottom-50">
+    <div class="padding-bottom-50 bg-fff">
       <swiper>
 
       </swiper>

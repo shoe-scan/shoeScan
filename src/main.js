@@ -6,6 +6,8 @@ import router from './router'
 import Vuex from 'vuex';
 import {Swipe, SwipeItem, Cell, TabContainer, TabContainerItem, Navbar, TabItem, Badge} from 'mint-ui';
 import "mint-ui/lib/style.min.css";
+import './assets/css/common.css';
+
 Vue.use(Vuex);
 import store from './store/store';
 Vue.component(Swipe.name, Swipe);

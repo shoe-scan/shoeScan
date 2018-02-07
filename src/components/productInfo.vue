@@ -64,7 +64,7 @@
                @click.native="goProductList">
       </mt-cell>
       <div class="dis-flex">
-        <div class="flex-1 width-33 padding-0-10" @click="goIndex">
+        <div class="flex-1 width-33 padding-0-5">
           <img src="https://i1.ygimg.cn/pics/tata/2017/100537031/100537031_01_mb.jpg?2" alt="">
           <div class="padding-bottom-5">
             牛皮革男皮鞋
@@ -73,7 +73,7 @@
             &yen;2000
           </div>
         </div>
-        <div class="flex-1 width-33" @click="goIndex">
+        <div class="flex-1 width-33 padding-0-5">
           <img src="https://i1.ygimg.cn/pics/tata/2017/100537031/100537031_01_mb.jpg?2" alt="">
           <div class="padding-bottom-5">
             牛皮革男皮鞋
@@ -82,7 +82,7 @@
             &yen;2000
           </div>
         </div>
-        <div class="flex-1 width-33" @click="goIndex">
+        <div class="flex-1 width-33 padding-0-5">
           <img src="https://i1.ygimg.cn/pics/tata/2017/100537031/100537031_01_mb.jpg?2" alt="">
           <div class="padding-bottom-5">
             牛皮革男皮鞋
@@ -91,6 +91,9 @@
             &yen;2000
           </div>
         </div>
+      </div>
+      <div class="margin-10-0 text-align-c margin-top-30">
+        <span class="appy-hyp">换一批</span>
       </div>
     </div>
   </div>
@@ -127,15 +130,16 @@
           }
         })
       },
-      goIndex(){
-        this.$router.push({
-          name: "index",
-        })
-      }
     },
   }
 </script>
 <style scoped>
+  .appy-hyp{
+    padding: 4px 15px;
+    border-radius: 20px;
+    color: #6cb5f9;
+    border: 1px solid #6cb5f9;
+  }
   .app-pro-name {
     padding: 10px 0;
     -webkit-box-flex: 1;
@@ -173,12 +177,6 @@
     z-index: 15;
     -webkit-transform-origin: 50% 100%;
     transform-origin: 50% 100%;
-  }
-
-  .app-sale-price {
-    color: #ef0717 !important;
-    font-size: 16px;
-    font-weight: 700;
   }
 
   .appy-border {

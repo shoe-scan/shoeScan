@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="bg-fff">
     <div class="padding-10-10-10-15 border-bottom-d9d9d9" @click="goIndex">
       <div class="overflow-hidden">
         <div class="float-left">沈阳赛特综合奥莱</div>
