@@ -24,6 +24,11 @@ const router = new Router({
       name: 'productList',
       component: ProductList
     },
+    {
+      path: '/cart',
+      name: 'cart',
+      component: Cart
+    },
   ]
 });
 router.afterEach((to, fram, next) => {
