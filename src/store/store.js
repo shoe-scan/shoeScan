@@ -4,12 +4,14 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
   // 定义状态
   state: {
-    count: 1
+    shopName:"",//门店名
+    productInfoShopList:[],
+    openSelectShop:true,
   },
   mutations:{
-    increment(state,n){
-      state.count+=n
+    getLocation(){
+
     }
-  }
+  },
 })
 export default store;

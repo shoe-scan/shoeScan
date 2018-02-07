@@ -1,5 +1,12 @@
 <template>
-  <router-view></router-view>
+  <div v-if="showLocation">
+    <div class="app-location">
+      <div class="location_indicator">
+      </div>
+    </div>
+    <div class="app-location-error hide"></div>
+  </div>
+  <router-view v-else></router-view>
 </template>
 
 <script>
@@ -23,6 +30,20 @@
       name: '滴胶/纺织物/牛皮革男休闲鞋'
     };
   sessionStorage.setItem('appConfig', JSON.stringify(GAppConfig));
+  export default{
+    data(){
+      return {
+        showLocation: true
+      }
+    },
+    created(){
+      let that = this;
+      setTimeout(function () {
+        that.showLocation = false;
+      }, 1000)
+    },
+    methods: {}
+  }
 </script>
 <style scoped>
 

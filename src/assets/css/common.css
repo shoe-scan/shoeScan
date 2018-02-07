@@ -27,7 +27,9 @@ html,body{
 .size-14 {
   font-size: 14px;
 }
-
+.size-17{
+  font-size:17px;
+}
 .float-left {
   float: left;
 }
@@ -102,7 +104,9 @@ html,body{
 .cor-fff {
   color: #fff;
 }
-
+.cor-333 {
+  color: #333;
+}
 .cor-666 {
   color: #666;
 }

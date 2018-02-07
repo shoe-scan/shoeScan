@@ -177,6 +177,8 @@
     z-index: 15;
     -webkit-transform-origin: 50% 100%;
     transform-origin: 50% 100%;
+    -webkit-transform: scaleY(.5);
+    transform: scaleY(.5);
   }
 
   .appy-border {
