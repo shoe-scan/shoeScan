@@ -19,7 +19,6 @@ time, mark, audio, video {
 }
 html,body{
   height:100%;
-  background-color: #dedede;
 }
 .size-12 {
   font-size: 12px;
@@ -88,7 +87,10 @@ html,body{
 .height-50p {
   height: 50px;
 }
-
+.height-100-bg-eee{
+  height:100%;
+  background: #efeff4;
+}
 .line-height-50 {
   line-height: 50px;
 }
