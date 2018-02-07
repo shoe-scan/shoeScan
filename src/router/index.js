@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Index from '../pages/index';
-// /*import Cart from '../pages/cart';//购物车
-// import ProductList from '../pages/productList';//商品列表*/
+import Cart from '../pages/cart';//购物车
+// import ProductList from '../pages/productList';//商品列表
 import NearShop from '../pages/nearShop';//附近门店
 
 Vue.use(Router)
@@ -18,6 +18,11 @@ export default new Router({
       path: '/nearShop',
       name: 'nearShop',
       component: NearShop
+    },
+    {
+      path: '/cart',
+      name: 'cart',
+      component: Cart
     },
   ]
 })

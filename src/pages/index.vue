@@ -31,6 +31,7 @@
         this.$store.commit("increment",10)
       }
     },
+    mounted(){},
     components:{
       Swiper,
       Foot,
