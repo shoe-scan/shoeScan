@@ -17,7 +17,7 @@
   import ProductInfo from './../components/productInfo';//商品信息
   import Tabs from './../components/tabs';//切换图文详情和评论
   import {Indicator} from 'mint-ui';
-  let AppConfig = JSON.parse(sessionStorage.getItem('appConfig'));
+  import {mapGetters} from 'vuex';
   export default {
     name: 'Index',
     data(){
@@ -26,24 +26,24 @@
       }
     },
     created(){
-      if (this.$store.state.openSelectShop) {
+      if (this.$store.state.productDetail.openSelectShop) {
         Indicator.open({
           spinnerType: 'fading-circle'
         });
-        this.$http.post(AppConfig.basePATH + "app/scan/getShopInfo", {
-            brandNo: AppConfig.brandNo,
-            barcode: AppConfig.barcode,
+        this.$http.post(this.$store.state.productDetail.AppConfig.basePATH + "app/scan/getShopInfo", {
+            brandNo: this.$store.state.productDetail.AppConfig.brandNo,
+            barcode:this.$store.state.productDetail.AppConfig.barcode,
             longitude: 123.400506,
             latitude: 41.793524
           },
           {
             emulateJSON: true
           }).then(function (res) {
-          console.log(res.data)
           var data = res.data.data;
           if (data.shopList.length > 1) {
             this.moreShops = true;
-            this.$store.state.productInfoShopList = data.shopList;
+            this.$store.state.productDetail.productInfoShopList = data.shopList;
+            this.$store.state.productDetail.productInfo = data;
             this.$router.push({
               name: 'selectShop'
             })
@@ -55,16 +55,7 @@
       }
     },
     methods: {
-      clickMe(){
-        Toast({
-          message: '提示',
-          position: 'bottom',
-          duration: 5000
-        });
-      },
-      add(){
-        this.$store.commit("increment", 10)
-      }
+
     },
     components: {
       Swiper,

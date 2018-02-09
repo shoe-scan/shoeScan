@@ -8,7 +8,6 @@ import SelectShop from '../pages/selectShop';//请选择店铺
 
 
 Vue.use(Router)
-
 const router = new Router({
   routes: [
     {

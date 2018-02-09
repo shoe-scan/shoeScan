@@ -1,8 +1,8 @@
 <template>
   <div class="padding-0-10 productInfo">
     <div class="app-pro-name">
-      <div class="appy-title">考拉绒保暖打底裤</div>
-      <div class="cor-666">R9Z00007DA1AJ2</div>
+      <div class="appy-title">点击的季度季度</div>
+      <div class="cor-666">ddddd</div>
     </div>
     <div class="app-underline">
       <span class="app-sale-price">¥200</span>&nbsp;
@@ -11,7 +11,7 @@
       </div>
     </div>
     <div class="app-underline padding-10-0 cor-666">
-      <div>当前门店：沈阳兴隆一百BST</div>
+      <div>当前门店：</div>
       <div>
         本店<span class="cor-ef0717">0</span>件&nbsp;&nbsp;&nbsp;&nbsp;
         邻店<span class="cor-ef0717">0</span>件
@@ -29,11 +29,8 @@
           <span>颜色</span>
         </div>
         <div class="table-cell app-item appy-color">
-          <span class="active">白色</span>
-          <span>白色</span>
-          <span>白色</span>
-          <span>白色</span>
-          <span>白色</span>
+          <!--<span v-for="(item,index) in productDetail" @click="selectColor(item)"
+                :class="{active:item.itemNo==isCurItemNo}">{{item.colorName}}</span>-->
         </div>
       </div>
       <div class="table app-pro-attr">
@@ -99,7 +96,32 @@
   </div>
 </template>
 <script>
+  import {mapGetters} from 'vuex';
   export default{
+      data(){
+        return{
+          isCurItemNo:""
+        }
+      },
+    created(){
+
+    },
+    computed: {
+      /*shopName(){
+        return this.$store.state.shopName;
+      },
+      productDetail(){
+        return this.$store.state.productDetail;
+      },
+      AppConfig(){
+        return this.$store.state.AppConfig;
+      },
+      getCurProductDetail(){
+        return this.$store.state.getCurProductDetail;
+      },*/
+      ...mapGetters(['shopName','productDetail','AppConfig','curProductDetail']),
+     /* ...mapGetters("some/nested/module",["productDetail"])*/
+    },
     methods: {
       goNearShop(){
         this.$router.push({
@@ -130,16 +152,30 @@
           }
         })
       },
+      selectColor(item){
+          this.isCurItemNo = item.itemNo;
+          this.$store.commit("getCurProductDetail",item.itemNo);
+      }
     },
+    watch: {
+      productDetail(value){
+        if (this.$store.state.initItemNo) {
+          this.$store.commit("getCurProductDetail", this.$store.state.AppConfig.itemNo);
+        } else {
+
+        }
+      }
+    }
   }
 </script>
 <style scoped>
-  .appy-hyp{
+  .appy-hyp {
     padding: 4px 15px;
     border-radius: 20px;
     color: #6cb5f9;
     border: 1px solid #6cb5f9;
   }
+
   .app-pro-name {
     padding: 10px 0;
     -webkit-box-flex: 1;

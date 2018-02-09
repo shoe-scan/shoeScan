@@ -1,17 +1,16 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 Vue.use(Vuex);
+import productDetail from './module/productDetail';
+import productList from './module/productList';
+import nearShop from './module/nearShop';
+import cart from './module/cart';
 const store = new Vuex.Store({
-  // 定义状态
-  state: {
-    shopName:"",//门店名
-    productInfoShopList:[],
-    openSelectShop:true,
-  },
-  mutations:{
-    getLocation(){
-
-    }
+  modules:{
+    productDetail,
+    productList,
+    nearShop,
+    cart
   },
 })
 export default store;
