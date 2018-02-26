@@ -27,7 +27,7 @@
             <div class="appm-dt-line"></div>
           </div>
         </div>
-        <img data-v-628cb068="" src="http://retail.belle.net.cn/mmp//shoe-scan/images/bigshoes.jpg" alt="">
+        <img class="imgs" v-for="item in imgs.supList" :src="item.wehcatPictureUrl" alt="">
       </mt-tab-container-item>
       <mt-tab-container-item id="2">
         <div class="padding-bottom-10 border-bottom-d9d9d9">
@@ -86,12 +86,16 @@
   </div>
 </template>
 <script>
+  import {mapGetters} from 'vuex';
   export default{
     data(){
       return {
         selected: "1"
       }
-    }
+    },
+    computed: {
+      ...mapGetters(['imgs']),
+    },
   }
 </script>
 <style scoped>
@@ -144,6 +148,10 @@
 
   .border-top-d9d9d9 {
     border-top: 1px solid #d9d9d9;
+  }
+  .imgs{
+    display: block;
+    width:100%;
   }
 </style>
 

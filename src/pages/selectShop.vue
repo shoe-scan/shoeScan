@@ -3,13 +3,13 @@
     <div class="text-align-c app-underline size-17 height-50p line-height-50 cor-333">
       请选择店铺
     </div>
-    <mt-cell v-for="item in productInfoShopList" class="app-underline cor-333"
+    <mt-cell v-for="item in productInfoShopList" :key="item.id" class="app-underline cor-333"
              :title="item.shortName" @click.native="selectShop(item.shopNo,item.shortName)"></mt-cell>
   </div>
 </template>
 <script>
-  import {Indicator} from 'mint-ui';
   import {mapGetters} from 'vuex';
+  import api from '../api/productDetail';
   export default{
     data(){
       return {}
@@ -29,24 +29,14 @@
         this.$router.push({
           name: "index"
         })
-        this.getProductDetail();
-      },
-      getProductDetail(){//商品资料和价格
-        Indicator.open({
-          spinnerType: 'fading-circle'
-        });
-        this.$http.post(this.$store.state.productDetail.AppConfig.basePATH + "app/shopping/queryItemForShopCar", {
-            itemNo: this.$store.state.productDetail.productInfo.itemNo,
-            shopNo: this.$store.state.productDetail.shopNo,
-            styleNo: this.$store.state.productDetail.productInfo.styleNo,
-            zoneNo: this.$store.state.productDetail.productInfo.zoneNo,
-            brandNo: this.$store.state.productDetail.AppConfig.brandNo
-          },
-          {
-            emulateJSON: true
-          }).then(function (res) {
-          this.$store.commit("productDetail", res.data.data);
-          Indicator.close();
+        let that = this;
+        this.$store.dispatch('getProductInfo').then(() => {
+          that.$store.dispatch('getImgs');
+          that.$store.dispatch('getFab');
+        }).then(() => {
+          that.$store.dispatch('getSize');
+        }).then(()=>{
+          that.$store.dispatch('getRecommend');
         })
       }
     }

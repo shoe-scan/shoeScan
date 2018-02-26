@@ -1,3 +1,27 @@
+/*站位图   start*/
+.ss-title{
+  height:20px;
+  width:60%;
+  background-color: #f2f2f2;
+}
+.ss-badge{
+  width:30px;
+  border-radius: 8px;
+  font-size: 12px;
+  padding: 2px 6px;
+  background-color: #f2f2f2;
+}
+.ss-width-100{
+  width:100%;
+  height:16px;
+  background-color: #f2f2f2;
+}
+.ss-tel{
+  width:100px;
+  height:16px;
+  background-color: #f2f2f2;
+}
+/*站位图    end*/
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -65,7 +89,9 @@ html,body{
 .flex-0-1-auto {
   flex: 0 1 auto;
 }
-
+.content-space-between{
+  justify-content:space-between;
+}
 .text-align-c {
   text-align: center;
 }
@@ -73,7 +99,6 @@ html,body{
 .width-33 {
   width: 33.33%;
 }
-
 .width-50 {
   width: 50%;
 }
@@ -85,12 +110,18 @@ html,body{
 .width-50p {
   width: 50px;
 }
-
+.height-26em{
+  height:2.6rem;
+  line-height:1.3em;
+}
 .height-50p {
   height: 50px;
 }
-.height-100-bg-eee{
+.height-100{
   height:100%;
+}
+.height-100-bg-eee{
+  min-height:100%;
   background: #efeff4;
 }
 .line-height-44 {
@@ -150,6 +181,9 @@ html,body{
 }
 .margin-top-30 {
   margin-top: 30px;
+}
+.margin-bottom-5 {
+  margin-bottom: 5px;
 }
 .margin-bottom-10 {
   margin-bottom: 10px;
@@ -300,4 +334,16 @@ html,body{
 }
 .app-cell-swipe>.mint-cell-wrapper>.mint-cell-title{
   display: none;
+}
+.mint-swipe-indicator {
+  opacity: 0.5;
+}
+.mint-swipe-indicator.is-active {
+  background: #46bfba;
+}
+.app-no-data {
+  width: 100%;
+  height: 100%;
+  background: url(../images/bg_no_data.png) no-repeat center center;
+  background-size: 270px;
 }
