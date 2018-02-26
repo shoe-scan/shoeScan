@@ -301,3 +301,7 @@ html,body{
 .app-cell-swipe>.mint-cell-wrapper>.mint-cell-title{
   display: none;
 }
+.app-cell-swipe .mint-cell-swipe-button {
+  background-color: #ff0000;
+  color: #fff;
+}
