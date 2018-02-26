@@ -5,7 +5,18 @@ import App from './App'
 import router from './router'
 import Vuex from 'vuex';
 import VueResource from 'vue-resource';
-import {Swipe, SwipeItem, CellSwipe, Cell, TabContainer, TabContainerItem, Navbar, TabItem, Badge, Checklist} from 'mint-ui';
+import {
+  Swipe,
+  SwipeItem,
+  CellSwipe,
+  Cell,
+  TabContainer,
+  TabContainerItem,
+  Navbar,
+  TabItem,
+  Badge,
+  Checklist
+} from 'mint-ui';
 import "mint-ui/lib/style.min.css";
 import './assets/css/common.css';
 

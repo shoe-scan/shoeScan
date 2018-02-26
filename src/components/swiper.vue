@@ -1,20 +1,19 @@
 <template>
   <div class="width-height-100">
     <mt-swipe :auto="0">
-      <mt-swipe-item>
-        <img src="http://retail.belle.net.cn/mmp//shoe-scan/images/bigshoes.jpg" alt="">
-      </mt-swipe-item>
-      <mt-swipe-item>
-        <img src="http://retail.belle.net.cn/mmp//shoe-scan/images/bigshoes.jpg" alt="">
-      </mt-swipe-item>
-      <mt-swipe-item>
-        <img src="http://retail.belle.net.cn/mmp//shoe-scan/images/bigshoes.jpg" alt="">
+      <mt-swipe-item v-for="item in imgs.mainList"  :key="item.id">
+        <img :src="item.wehcatPictureUrl" alt="">
       </mt-swipe-item>
     </mt-swipe>
   </div>
 </template>
 <script>
-
+  import {mapGetters} from 'vuex';
+  export default{
+    computed: {
+      ...mapGetters(['imgs']),
+    },
+  }
 </script>
 <style scoped>
   .width-height-100 {

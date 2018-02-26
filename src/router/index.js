@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Index from '../pages/index';
+import Index from '../pages/index';//商品首页
 import Cart from '../pages/cart';//购物车
 import ProductList from '../pages/productList';//商品列表
 import NearShop from '../pages/nearShop';//附近门店
@@ -18,32 +18,32 @@ const router = new Router({
     {
       path: '/nearShop',
       name: 'nearShop',
-      meta:{
-        title:"附近门店",
+      meta: {
+        title: "附近门店",
       },
       component: NearShop
     },
     {
       path: '/productList',
       name: 'productList',
-      meta:{
-        title:"你可能喜欢",
+      meta: {
+        title: "你可能喜欢",
       },
       component: ProductList
     },
     {
       path: '/cart',
       name: 'cart',
-      meta:{
-        title:"购物车",
+      meta: {
+        title: "购物车",
       },
       component: Cart
     },
     {
       path: '/selectShop',
       name: 'selectShop',
-      meta:{
-        title:"选择店铺",
+      meta: {
+        title: "选择店铺",
       },
       component: SelectShop
     },
@@ -52,10 +52,10 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
   if (to.meta.title) {//判断是否有标题
     document.title = to.meta.title;
-  }else{
+  } else {
     document.title = "";
   }
-  if(to.name=="selectShop"){
+  if (to.name == "selectShop") {
     router.replace("/");//刷新回到首页
   }
   next()

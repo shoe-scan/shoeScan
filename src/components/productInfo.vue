@@ -1,24 +1,24 @@
 <template>
   <div class="padding-0-10 productInfo">
     <div class="app-pro-name">
-      <div class="appy-title">点击的季度季度</div>
-      <div class="cor-666">ddddd</div>
+      <div class="appy-title">{{curProductDetail.name}}</div>
+      <div class="cor-666">{{curProductDetail.code}}</div>
     </div>
     <div class="app-underline">
-      <span class="app-sale-price">¥200</span>&nbsp;
-      <div>
+      <span class="app-sale-price">¥{{curProductDetail.tagPrice}}</span>&nbsp;
+      <div class="padding-bottom-10">
         <span class="cor-666">价格仅供参考，以门店开单价格为准</span>
       </div>
     </div>
     <div class="app-underline padding-10-0 cor-666">
-      <div>当前门店：</div>
+      <div>当前门店：{{shopName}}</div>
       <div>
-        本店<span class="cor-ef0717">0</span>件&nbsp;&nbsp;&nbsp;&nbsp;
-        邻店<span class="cor-ef0717">0</span>件
+        本店<span class="cor-ef0717">{{curSize.availableQty}}</span>件&nbsp;&nbsp;&nbsp;&nbsp;
+        邻店<span class="cor-ef0717">{{curSize.neighbourQty}}</span>件
       </div>
     </div>
     <div class="padding-10-0">
-      <div>
+      <div v-if="curSize.availableQty<=0">
         <div class="padding-bottom-10 cor-4DC99A size-12">
           本店库存不足，可选择
           <span class="cor-2196f3 padding-2-5 size-14 appy-border">到货通知</span>
@@ -29,8 +29,8 @@
           <span>颜色</span>
         </div>
         <div class="table-cell app-item appy-color">
-          <!--<span v-for="(item,index) in productDetail" @click="selectColor(item)"
-                :class="{active:item.itemNo==isCurItemNo}">{{item.colorName}}</span>-->
+          <span v-for="(item,index) in productDetail" @click="selectColor(item)"
+                :class="{active:item.itemNo==isCurItemNo}">{{item.colorName}}</span>
         </div>
       </div>
       <div class="table app-pro-attr">
@@ -38,7 +38,8 @@
           <span>尺码</span>
         </div>
         <div class="table-cell app-item appy-color">
-          <span class="active">F</span>
+          <span v-for="item in sizes" @click="selectSize(item)"
+                :class="{active:item.barcode == isCurBarCode}">{{item.sizeNo}}</span>
         </div>
       </div>
       <div class="table app-pro-attr app-pro-num">
@@ -46,8 +47,10 @@
           <span>数量</span>
         </div>
         <div class="table-cell app-item">
-          <span class="disabled appy-minus">-</span><span class="appy-qty" data-totalqty="0">1</span><span
-          class="appy-add disabled">+</span>
+          <span class="appy-minus" @click="minus(qty)" :class="{disabled:qty==1}">-</span>
+          <span class="appy-qty" data-totalqty="0">{{qty}}</span>
+          <span class="appy-add" @click="add(qty)"
+                :class="{disabled:qty>=maxQty}">+</span>
         </div>
       </div>
       <mt-cell class="border-top-d9d9d9"
@@ -55,84 +58,47 @@
                is-link
                @click.native="goNearShop">
       </mt-cell>
-      <mt-cell class="border-top-d9d9d9"
-               title="你可能喜欢"
-               is-link
-               @click.native="goProductList">
-      </mt-cell>
-      <div class="dis-flex">
-        <div class="flex-1 width-33 padding-0-5">
-          <img src="https://i1.ygimg.cn/pics/tata/2017/100537031/100537031_01_mb.jpg?2" alt="">
-          <div class="padding-bottom-5">
-            牛皮革男皮鞋
-          </div>
-          <div class="app-sale-price">
-            &yen;2000
-          </div>
-        </div>
-        <div class="flex-1 width-33 padding-0-5">
-          <img src="https://i1.ygimg.cn/pics/tata/2017/100537031/100537031_01_mb.jpg?2" alt="">
-          <div class="padding-bottom-5">
-            牛皮革男皮鞋
-          </div>
-          <div class="app-sale-price">
-            &yen;2000
+      <template v-if="reCommends.length>0">
+        <mt-cell class="border-top-d9d9d9"
+                 title="你可能喜欢"
+                 is-link
+                 @click.native="goProductList">
+        </mt-cell>
+        <div class="dis-flex">
+          <div v-for="item in reCommends" class="width-33 padding-0-5" @click="goIndex(item)">
+            <img :src="item.imageUrl" alt="">
+            <div class="text-overflow-2 height-26em">
+              {{item.name}}
+            </div>
+            <div class="app-sale-price">
+              &yen;{{item.tagPrice}}
+            </div>
           </div>
         </div>
-        <div class="flex-1 width-33 padding-0-5">
-          <img src="https://i1.ygimg.cn/pics/tata/2017/100537031/100537031_01_mb.jpg?2" alt="">
-          <div class="padding-bottom-5">
-            牛皮革男皮鞋
-          </div>
-          <div class="app-sale-price">
-            &yen;2000
-          </div>
+        <div class="margin-10-0 text-align-c margin-top-30">
+          <span class="appy-hyp" @click="hyp">换一批</span>
         </div>
-      </div>
-      <div class="margin-10-0 text-align-c margin-top-30">
-        <span class="appy-hyp">换一批</span>
-      </div>
+      </template>
     </div>
   </div>
 </template>
 <script>
   import {mapGetters} from 'vuex';
   export default{
-      data(){
-        return{
-          isCurItemNo:""
-        }
-      },
-    created(){
-
-    },
     computed: {
-      /*shopName(){
-        return this.$store.state.shopName;
-      },
-      productDetail(){
-        return this.$store.state.productDetail;
-      },
-      AppConfig(){
-        return this.$store.state.AppConfig;
-      },
-      getCurProductDetail(){
-        return this.$store.state.getCurProductDetail;
-      },*/
-      ...mapGetters(['shopName','productDetail','AppConfig','curProductDetail']),
-     /* ...mapGetters("some/nested/module",["productDetail"])*/
+      ...mapGetters(['shopName', 'productDetail', 'AppConfig', 'curProductDetail', 'sizes', 'curSize', 'qty', 'maxQty', 'isCurItemNo', 'isCurBarCode', 'reCommends']),
     },
     methods: {
       goNearShop(){
         this.$router.push({
           name: "nearShop",
           query: {
-            shopNo: "CO07TT",
-            itemCode: "AA3T3537DU1CM7",
-            sizeNo: "240",
-            brandNo: "TT01",
-            shardingFlag: "U010101_C",
-            zoneNo: "C"
+            shopNo: this.$store.state.productDetail.shopNo,
+            itemCode: this.$store.state.productDetail.curProductDetail.code,
+            sizeNo: this.$store.state.productDetail.curSize.sizeNo,
+            brandNo: this.$store.state.productDetail.curProductDetail.brandNo,
+            shardingFlag: this.$store.state.productDetail.productInfo.shardingFlag,
+            zoneNo: this.$store.state.productDetail.productInfo.zoneNo
           }
         })
       },
@@ -140,32 +106,64 @@
         this.$router.push({
           name: "productList",
           query: {
-            itemNo: "20170606000001",
-            brandNo: "TT01",
-            shopNo: "CO33TT",
-            years: "20160729000001",
-            categoryNo: "010102",
-            season: "20141017000022",
-            zoneNo: "C",
-            gender: "20141017000029",
-            organTypeNo: "U010101",
+            itemNo: this.$store.state.productDetail.curProductDetail.itemNo,
+            brandNo: this.$store.state.productDetail.curProductDetail.brandNo,
+            shopNo: this.$store.state.productDetail.shopNo,
+            years: this.$store.state.productDetail.curProductDetail.years,
+            categoryNo: this.$store.state.productDetail.curProductDetail.categoryNo,
+            season: this.$store.state.productDetail.curProductDetail.purchaseSeason,
+            zoneNo: this.$store.state.productDetail.productInfo.zoneNo,
+            gender: this.$store.state.productDetail.curProductDetail.gender,
+            organTypeNo: this.$store.state.productDetail.productInfo.organTypeNo,
           }
         })
       },
       selectColor(item){
-          this.isCurItemNo = item.itemNo;
-          this.$store.commit("getCurProductDetail",item.itemNo);
+        this.$store.commit("isCurItemNo", item.itemNo);
+        this.$store.commit("getCurProductDetail", item.itemNo);
+        this.$store.dispatch('getImgs');
+        this.$store.dispatch('getSize').then(() => {
+          this.$store.commit("curSize", this.$store.state.productDetail.sizes[0].barcode);
+          this.$store.commit("isCurBarCode", this.$store.state.productDetail.sizes[0].barcode);
+        });
+        this.$store.dispatch("getRecommend");
+        this.$store.dispatch("getFab",item.itemNo);
+      },
+      selectSize(item){
+        this.$store.commit("isCurBarCode", item.barcode);
+        this.$store.commit("curSize", item.barcode);
+      },
+      add(qty){
+        this.$store.commit("addQty", qty);
+      },
+      minus(qty){
+        this.$store.commit("minusQty", qty);
+      },
+      hyp(){//换一批
+        if (this.$store.state.productDetail.pageNo * 3 < this.$store.state.productDetail.total) {
+          this.$store.commit("addPageNo");
+        } else {
+          this.$store.commit("addPageNo", 1);
+        }
+        this.$store.dispatch('getRecommend');
+      },
+      goIndex(obj){
+        this.$router.push({
+          name: "index",
+          query:{
+              id:obj.id
+          }
+        })
+        let that = this;
+        this.$store.dispatch('getProductInfo',{obj}).then(() => {
+          that.$store.dispatch('getImgs');
+        }).then(() => {
+          that.$store.dispatch('getSize',{obj});
+        }).then(()=>{
+          that.$store.dispatch('getRecommend');
+        })
       }
     },
-    watch: {
-      productDetail(value){
-        if (this.$store.state.initItemNo) {
-          this.$store.commit("getCurProductDetail", this.$store.state.AppConfig.itemNo);
-        } else {
-
-        }
-      }
-    }
   }
 </script>
 <style scoped>

@@ -1,53 +1,9 @@
 <template>
   <div>
-    <div class="list-block margin-bottom-10">
-      <div class="item-bar">沈阳中兴TT</div>
-      <div class="mint-cell-wrapper padding-0">
-        <mt-cell-swipe
-          class="app-cell-swipe"
-          :right="[
-          {
-            content: 'Delete',
-            style: { background: 'red', color: '#fff' }
-          }
-        ]">
-          <div class="mint-cell-title">
-            <label class="mint-checklist-label item-content padding-0">
-              <div class="item-media">
-                <span class="mint-checkbox">
-                  <input type="checkbox" class="mint-checkbox-input" value="选项B">
-                  <span class="mint-checkbox-core app-checkbox-core"></span>
-                </span>
-              </div>
-              <div class="item-media padding-left-10">
-                <img src="https://i1.ygimg.cn/pics/tata/2017/100552778/100552778_01_mb.jpg?3" width="70">
-              </div>
-              <div class="item-inner">
-                <div class="item-title-row ">
-                  <div class="cor-000"><span class="app-ld">邻店</span>滴胶/纺织物/牛皮革男休闲鞋</div>
-                </div>
-                <div class="item-title-row cor-999">
-                  <div class="item-title">AA3T3537DU1CM7</div>
-                  <div class="item-after app-sale-price">&yen;999</div>
-                </div>
-                <div class="item-title-row cor-999">
-                  <div class="item-title">245 黑色</div>
-                  <div class="item-after">x1</div>
-                </div>
-              </div>
-            </label>
-          </div>
-        </mt-cell-swipe>
-      </div>
-      <div class="mint-cell-wrapper padding-0">
-        <mt-cell-swipe
-          class="app-cell-swipe"
-          :right="[
-          {
-            content: 'Delete',
-            style: { background: 'red', color: '#fff' }
-          }
-        ]">
+    <div class="list-block margin-bottom-10" v-for="(shops, key) in shopCarList">
+      <div class="item-bar">{{shops.shopName}}</div>
+      <div class="mint-cell-wrapper padding-0" v-for="(item, key) in shops.productList">
+        <mt-cell-swipe class="app-cell-swipe" :right="[{content: 'Delete'}]">
           <div class="mint-cell-title">
             <label class="mint-checklist-label item-content padding-0">
               <div class="item-media">
@@ -100,16 +56,26 @@
         </div>
       </div>
     </div>
-
   </div>
 </template>
 
 <script>
+  import {mapGetters, mapActions} from 'vuex';
+//  localStorage.setItem('shopCar',JSON.stringify({"CO12TT":{"shopName":"沈阳中兴TT","productList":{"20170606000001|240|U1":{"title":"滴胶/纺织物/牛皮革男休闲鞋","sizeNo":"240","color":"黑色","imgUrl":"https://i1.ygimg.cn/pics/tata/2017/100552778/100552778_01_mb.jpg?3","code":"AA3T3537DU1CM7","tagPrice":999,"salePrice":299,"qty":1,"brandNo":"TT01","availableQty":0,"neighbourQty":4,"isNeib":1,"brand":"他她","zone":"C","year":"2017","season":"秋"},"20170606000001|245|U1":{"title":"滴胶/纺织物/牛皮革男休闲鞋","sizeNo":"245","color":"黑色","imgUrl":"https://i1.ygimg.cn/pics/tata/2017/100552778/100552778_01_mb.jpg?3","code":"AA3T3537DU1CM7","tagPrice":999,"salePrice":299,"qty":1,"brandNo":"TT01","availableQty":0,"neighbourQty":10,"isNeib":1,"brand":"他她","zone":"C","year":"2017","season":"秋"}}},"CO54TT":{"shopName":"沈阳兴隆一百TT","productList":{"20170606000001|240|U1":{"title":"滴胶/纺织物/牛皮革男休闲鞋","sizeNo":"240","color":"黑色","imgUrl":"https://i1.ygimg.cn/pics/tata/2017/100552778/100552778_01_mb.jpg?3","code":"AA3T3537DU1CM7","tagPrice":999,"salePrice":299,"qty":1,"brandNo":"TT01","availableQty":0,"neighbourQty":4,"isNeib":1,"brand":"他她","zone":"C","year":"2017","season":"秋"},"20170606000001|245|U1":{"title":"滴胶/纺织物/牛皮革男休闲鞋","sizeNo":"245","color":"黑色","imgUrl":"https://i1.ygimg.cn/pics/tata/2017/100552778/100552778_01_mb.jpg?3","code":"AA3T3537DU1CM7","tagPrice":999,"salePrice":299,"qty":1,"brandNo":"TT01","availableQty":0,"neighbourQty":10,"isNeib":1,"brand":"他她","zone":"C","year":"2017","season":"秋"},"20170606000001|250|U1":{"title":"滴胶/纺织物/牛皮革男休闲鞋","sizeNo":"250","color":"黑色","imgUrl":"https://i1.ygimg.cn/pics/tata/2017/100552778/100552778_01_mb.jpg?3","code":"AA3T3537DU1CM7","tagPrice":999,"salePrice":299,"qty":1,"brandNo":"TT01","availableQty":0,"neighbourQty":14,"isNeib":1,"brand":"他她","zone":"C","year":"2017","season":"秋"}}}}))
   export default{
-    data(){
-      return {
-        aa: ['A']
-      }
+    computed: {
+      ...mapGetters([
+        'shopCarList'
+      ])
+    },
+    mounted(){
+      // 获取购物车列表
+      this.getShopCarByLocal();
+    },
+    methods: {
+      ...mapActions([
+        'getShopCarByLocal'
+      ])
     }
   }
 </script>
@@ -365,5 +331,4 @@
     right: 100%;
     margin-right: -1px
   }
-
 </style>
