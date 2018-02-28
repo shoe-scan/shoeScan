@@ -1,31 +1,36 @@
 <template>
   <div>
-    <div class="list-block margin-bottom-10" v-for="(shops, key) in shopCarList">
+    <div class="list-block margin-bottom-10" v-for="(shops, key) in shopCarList" :key="key">
       <div class="item-bar">{{shops.shopName}}</div>
-      <div class="mint-cell-wrapper padding-0" v-for="(item, key) in shops.productList">
-        <mt-cell-swipe class="app-cell-swipe" :right="[{content: 'Delete'}]">
-          <div class="mint-cell-title">
+      <div class="mint-cell-wrapper padding-0" v-for="(item, key1) in shops.productList" :key="key1">
+        <mt-cell-swipe class="app-cell-swipe" :right="[{
+            content: '删除',
+            handler: ()=>delProduct([key,key1])
+        }]">
+          <div class="mint-cell-title" @click="checkItem(key, key1)">
             <label class="mint-checklist-label item-content padding-0">
               <div class="item-media">
                 <span class="mint-checkbox">
-                  <input type="checkbox" class="mint-checkbox-input" value="选项B">
+                  <input type="checkbox" class="mint-checkbox-input" v-model='shops.checkedList' :value="key1">
                   <span class="mint-checkbox-core app-checkbox-core"></span>
                 </span>
               </div>
               <div class="item-media padding-left-10">
-                <img src="https://i1.ygimg.cn/pics/tata/2017/100552778/100552778_01_mb.jpg?3" width="70">
+                <img :src="item.imgUrl" width="70">
               </div>
               <div class="item-inner">
                 <div class="item-title-row ">
-                  <div class="cor-000"><span class="app-ld">邻店</span>滴胶/纺织物/牛皮革男休闲鞋</div>
+                  <div class="cor-000">
+                    <span class="app-ld" v-if="item.isNeib == 1">邻店</span>{{item.title}}
+                  </div>
                 </div>
                 <div class="item-title-row cor-999">
-                  <div class="item-title">AA3T3537DU1CM7</div>
-                  <div class="item-after app-sale-price">&yen;999</div>
+                  <div class="item-title">{{item.code}}</div>
+                  <div class="item-after app-sale-price">&yen;{{item.tagPrice}}</div>
                 </div>
                 <div class="item-title-row cor-999">
-                  <div class="item-title">245 黑色</div>
-                  <div class="item-after">x1</div>
+                  <div class="item-title">{{item.sizeNo}} {{item.color}}</div>
+                  <div class="item-after">x{{item.qty}}</div>
                 </div>
               </div>
             </label>
@@ -38,18 +43,19 @@
             <label class="mint-checklist-label item-content padding-left-0">
               <div class="item-media">
                 <span class="mint-checkbox">
-                  <input type="checkbox" class="mint-checkbox-input" value="选项B">
+                  <input type="checkbox" class="mint-checkbox-input"
+                         v-model="shops.checkedAll" :value="key" @click="checkedAll(key)">
                   <span class="mint-checkbox-core app-checkbox-core"></span>
                 </span>
               </div>
             </label>
           </div>
           <div class="item-title line-height-44">
-            数量：<span class="app-sale-price">1</span>&nbsp;
-            金额：<span class="app-sale-price">&yen;9999</span>
+            数量：<span class="app-sale-price">{{shops.totalQty}}</span>&nbsp;
+            金额：<span class="app-sale-price">&yen;{{shops.totalPrice}}</span>
           </div>
           <div class="item-after">
-            <button class="mint-button app-buy-btn" disabled>
+            <button class="mint-button app-buy-btn" :disabled="shops.btnDisabled" @click="createOrder(key)">
               <label class="mint-button-text">立即购买</label>
             </button>
           </div>
@@ -61,8 +67,13 @@
 
 <script>
   import {mapGetters, mapActions} from 'vuex';
-//  localStorage.setItem('shopCar',JSON.stringify({"CO12TT":{"shopName":"沈阳中兴TT","productList":{"20170606000001|240|U1":{"title":"滴胶/纺织物/牛皮革男休闲鞋","sizeNo":"240","color":"黑色","imgUrl":"https://i1.ygimg.cn/pics/tata/2017/100552778/100552778_01_mb.jpg?3","code":"AA3T3537DU1CM7","tagPrice":999,"salePrice":299,"qty":1,"brandNo":"TT01","availableQty":0,"neighbourQty":4,"isNeib":1,"brand":"他她","zone":"C","year":"2017","season":"秋"},"20170606000001|245|U1":{"title":"滴胶/纺织物/牛皮革男休闲鞋","sizeNo":"245","color":"黑色","imgUrl":"https://i1.ygimg.cn/pics/tata/2017/100552778/100552778_01_mb.jpg?3","code":"AA3T3537DU1CM7","tagPrice":999,"salePrice":299,"qty":1,"brandNo":"TT01","availableQty":0,"neighbourQty":10,"isNeib":1,"brand":"他她","zone":"C","year":"2017","season":"秋"}}},"CO54TT":{"shopName":"沈阳兴隆一百TT","productList":{"20170606000001|240|U1":{"title":"滴胶/纺织物/牛皮革男休闲鞋","sizeNo":"240","color":"黑色","imgUrl":"https://i1.ygimg.cn/pics/tata/2017/100552778/100552778_01_mb.jpg?3","code":"AA3T3537DU1CM7","tagPrice":999,"salePrice":299,"qty":1,"brandNo":"TT01","availableQty":0,"neighbourQty":4,"isNeib":1,"brand":"他她","zone":"C","year":"2017","season":"秋"},"20170606000001|245|U1":{"title":"滴胶/纺织物/牛皮革男休闲鞋","sizeNo":"245","color":"黑色","imgUrl":"https://i1.ygimg.cn/pics/tata/2017/100552778/100552778_01_mb.jpg?3","code":"AA3T3537DU1CM7","tagPrice":999,"salePrice":299,"qty":1,"brandNo":"TT01","availableQty":0,"neighbourQty":10,"isNeib":1,"brand":"他她","zone":"C","year":"2017","season":"秋"},"20170606000001|250|U1":{"title":"滴胶/纺织物/牛皮革男休闲鞋","sizeNo":"250","color":"黑色","imgUrl":"https://i1.ygimg.cn/pics/tata/2017/100552778/100552778_01_mb.jpg?3","code":"AA3T3537DU1CM7","tagPrice":999,"salePrice":299,"qty":1,"brandNo":"TT01","availableQty":0,"neighbourQty":14,"isNeib":1,"brand":"他她","zone":"C","year":"2017","season":"秋"}}}}))
+//  localStorage.setItem('shopCar', JSON.stringify({"CO12TT":{"shopName":"沈阳中兴TT","totalQty":0,"totalPrice":0,"checkedList":[],"btnDisabled":true,"checkedAll":false,"productList":{"20170606000001|240|U1":{"title":"滴胶/纺织物/牛皮革男休闲鞋","sizeNo":"240","color":"黑色","imgUrl":"https://i1.ygimg.cn/pics/tata/2017/100552778/100552778_01_mb.jpg?3","code":"AA3T3537DU1CM7","tagPrice":999,"salePrice":299,"qty":1,"brandNo":"TT01","availableQty":0,"neighbourQty":4,"isNeib":1,"brand":"他她","zone":"C","year":"2017","season":"秋"},"20170606000001|245|U1":{"title":"滴胶/纺织物/牛皮革男休闲鞋","sizeNo":"245","color":"黑色","imgUrl":"https://i1.ygimg.cn/pics/tata/2017/100552778/100552778_01_mb.jpg?3","code":"AA3T3537DU1CM7","tagPrice":999,"salePrice":299,"qty":1,"brandNo":"TT01","availableQty":0,"neighbourQty":10,"isNeib":1,"brand":"他她","zone":"C","year":"2017","season":"秋"}}},"CO54TT":{"shopName":"沈阳兴隆一百TT","totalQty":0,"totalPrice":0,"checkedList":[],"btnDisabled":true,"checkedAll":false,"productList":{"20170606000001|240|U1":{"title":"滴胶/纺织物/牛皮革男休闲鞋","sizeNo":"240","color":"黑色","imgUrl":"https://i1.ygimg.cn/pics/tata/2017/100552778/100552778_01_mb.jpg?3","code":"AA3T3537DU1CM7","tagPrice":999,"salePrice":299,"qty":1,"brandNo":"TT01","availableQty":0,"neighbourQty":4,"isNeib":1,"brand":"他她","zone":"C","year":"2017","season":"秋"},"20170606000001|245|U1":{"title":"滴胶/纺织物/牛皮革男休闲鞋","sizeNo":"245","color":"黑色","imgUrl":"https://i1.ygimg.cn/pics/tata/2017/100552778/100552778_01_mb.jpg?3","code":"AA3T3537DU1CM7","tagPrice":999,"salePrice":299,"qty":1,"brandNo":"TT01","availableQty":0,"neighbourQty":10,"isNeib":1,"brand":"他她","zone":"C","year":"2017","season":"秋"},"20170606000001|250|U1":{"title":"滴胶/纺织物/牛皮革男休闲鞋","sizeNo":"250","color":"黑色","imgUrl":"https://i1.ygimg.cn/pics/tata/2017/100552778/100552778_01_mb.jpg?3","code":"AA3T3537DU1CM7","tagPrice":999,"salePrice":299,"qty":1,"brandNo":"TT01","availableQty":0,"neighbourQty":14,"isNeib":1,"brand":"他她","zone":"C","year":"2017","season":"秋"}}}}))
   export default{
+    data(){
+      return {
+        isFirst: true // 处理商品选择执行两次事件，使用.prevent会禁用掉默认的复选框选中
+      }
+    },
     computed: {
       ...mapGetters([
         'shopCarList'
@@ -74,8 +85,22 @@
     },
     methods: {
       ...mapActions([
-        'getShopCarByLocal'
-      ])
+        'getShopCarByLocal',
+        'delProduct',
+        'checkedAll'
+      ]),
+      checkItem(shopKey, productKey){
+        if (!this.isFirst)return;
+        this.isFirst = false;
+        let _checkbox = event.currentTarget.querySelector("input[type=checkbox]");
+        setTimeout(() => {
+          this.$store.dispatch('checkedItem',[shopKey, productKey, _checkbox.checked]);
+          this.isFirst = true;
+        }, 260)
+      },
+      createOrder(shopKey){
+          console.log(JSON.stringify(this.shopCarList[shopKey]))
+      }
     }
   }
 </script>
@@ -84,7 +109,7 @@
   .item-bar {
     position: relative;
     margin-top: -1px;
-    background-color: #eee;
+    background-color: #f3f3f3;
     height: 44px;
     line-height: 44px;
     font-size: 14px;
