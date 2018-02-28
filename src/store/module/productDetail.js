@@ -29,6 +29,9 @@ const state = {
   total: 0,//换一批总数
   fab: null,
   cartNum: cartDetail ? carNum : 0,//购物车数量
+  showFab: false,//是否显示fab按钮
+  comment:{},//评论
+  showNotive:false,//显示到货通知
 };
 const mutations = {
   shopName(state, shopName){
@@ -111,6 +114,15 @@ const mutations = {
   },
   cartNum(state, cartNum){
     state.cartNum = cartNum;
+  },
+  showFab(state, showFab){
+    state.showFab = showFab;
+  },
+  comment(state,comment){
+    state.comment = comment;
+  },
+  showNotive(state,showNotive){
+    state.showNotive = showNotive;
   }
 };
 const getters = {
@@ -126,6 +138,10 @@ const getters = {
   isCurItemNo: state => state.isCurItemNo,
   isCurBarCode: state => state.isCurBarCode,
   reCommends: state => state.reCommends,
+  fab: state => state.fab,
+  showFab: state => state.showFab,
+  comment:state=>state.comment,
+  showNotive:state=>state.showNotive
 };
 const actions = {
   getProductInfo ({commit, state}, obj) {
@@ -197,15 +213,23 @@ const actions = {
     api.getFab(state.AppConfig.basePATH, {
       itemNo: state.curProductDetail.itemNo,
     }).then(res => {
-      commit("fab", res.data);
+      if (res.data && (res.data.fList || res.data.aList || res.data.bList || res.data.seriesList || res.data.brandStoryList || res.data.fPicUrl || res.data.aPicUrl || res.data.bPicUrl || res.data.seriesPicUrl || res.data.storyPicUrl)) {
+        commit("fab", res.data);
+        commit("showFab", true);
+      } else {
+        commit("showFab", false);
+      }
     })
   },
   getComment({commit, state}){
-    api.getFab(state.AppConfig.basePATH, {
-      itemNo: state.curProductDetail.itemNo,
+    api.getComment(state.AppConfig.basePATH, {
+      pageNo:1,
+      pageSize:10,
+      productCodes:state.curProductDetail.code,
+      starLowerLimit:3,
+      evaluationLengthLowerLimit:0,
     }).then(res => {
-      commit("fab", res.data);
-      resolve();
+      commit("comment", res.data || {});
     })
   }
 };

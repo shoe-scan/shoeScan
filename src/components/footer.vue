@@ -7,7 +7,6 @@
 <script>
   import {MessageBox} from 'mint-ui';
   import common from './../assets/js/common.js';
-  console.log(common);
   export default{
     methods: {
       addCart(){

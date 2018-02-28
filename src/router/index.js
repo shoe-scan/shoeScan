@@ -5,7 +5,7 @@ import Cart from '../pages/cart';//购物车
 import ProductList from '../pages/productList';//商品列表
 import NearShop from '../pages/nearShop';//附近门店
 import SelectShop from '../pages/selectShop';//请选择店铺
-
+import Fab from '../pages/fab';//特征与故事
 
 Vue.use(Router)
 const router = new Router({
@@ -46,6 +46,14 @@ const router = new Router({
         title: "选择店铺",
       },
       component: SelectShop
+    },
+    {
+      path: '/fab',
+      name: 'fab',
+      meta: {
+        title: "特征与故事",
+      },
+      component: Fab
     },
   ]
 });

@@ -54,6 +54,9 @@ export default {
         _shopObj.productList = _shopGroup;
         _shopObj.totalQty = 0;
         _shopObj.totalPrice = 0;
+        _shopObj.checkedList = [];
+        _shopObj.btnDisabled = true;
+        _shopObj.checkedAll = false;
         _aMrr[_sShopKey] = _shopObj;
       }
       //判断店铺时本店还是邻店
@@ -70,6 +73,9 @@ export default {
       _shopObj.productList = _shopGroup;
       _shopObj.totalQty = 0;
       _shopObj.totalPrice = 0;
+      _shopObj.checkedList = [];
+      _shopObj.btnDisabled = true;
+      _shopObj.checkedAll = false;
       _aMrr[_sShopKey] = _shopObj;
       _aMrr[_sShopKey] = _shopObj;
       //判断店铺时本店还是邻店

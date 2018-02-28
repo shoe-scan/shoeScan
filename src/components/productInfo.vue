@@ -21,7 +21,7 @@
       <div v-if="curSize.availableQty<=0">
         <div class="padding-bottom-10 cor-4DC99A size-12">
           本店库存不足，可选择
-          <span class="cor-2196f3 padding-2-5 size-14 appy-border">到货通知</span>
+          <span class="cor-2196f3 padding-2-5 size-14 appy-border" @click="notive">到货通知</span>
         </div>
       </div>
       <div class="table app-pro-attr">
@@ -160,6 +160,9 @@
         }).then(() => {
           that.$store.dispatch('getRecommend');
         })
+      },
+      notive(){//到货通知
+        this.$store.commit("showNotive",true);
       }
     },
   }
