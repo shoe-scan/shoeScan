@@ -8,7 +8,7 @@
       </mt-tab-item>
       <mt-tab-item id="2">
         <span>
-          评论
+          评论({{comment.total}})
         </span>
       </mt-tab-item>
     </mt-navbar>
@@ -30,57 +30,25 @@
         <img class="imgs" v-for="item in imgs.supList" :src="item.wehcatPictureUrl" alt="">
       </mt-tab-container-item>
       <mt-tab-container-item id="2">
-        <div class="padding-bottom-10 border-bottom-d9d9d9">
-          <mt-cell>
+        <div v-for="item in comment.result" class="padding-bottom-10 border-bottom-d9d9d9">
+          <mt-cell :title="item.nickName">
             <img class="border-radius-22" slot="icon"
-                 src="http://retail.belle.net.cn/mmp//shoe-scan/images/bigshoes.jpg" width="44" height="44">
+                 :src="item.headImgUrl"  width="44" height="44">
             <div>
-              <img width="15px" height="15px" src="http://172.17.220.193:6200/mmp/shoe-scan/images/icon_star1.png">
-              <img width="15px" height="15px" src="http://172.17.220.193:6200/mmp/shoe-scan/images/icon_star1.png">
-              <img width="15px" height="15px" src="http://172.17.220.193:6200/mmp/shoe-scan/images/icon_star1.png">
-              <img width="15px" height="15px" src="http://172.17.220.193:6200/mmp/shoe-scan/images/icon_star1.png">
-              <img width="15px" height="15px" src="http://172.17.220.193:6200/mmp/shoe-scan/images/icon_star1.png">
+              <img v-for="(index) in (5-item.productStarLevel)" width="15px" height="15px"
+                   src="./../assets/images/icon_star2.png">
+              <img v-for="(index) in item.productStarLevel" width="15px" height="15px"
+                   src="./../assets/images/icon_star1.png">
             </div>
           </mt-cell>
-          <div class="cor-666 size-14 padding-0-10">顾客未及时做出评价，系统默认好评！</div>
+          <div class="cor-666 size-14 padding-0-10" v-if="item.evaluation">{{item.evaluation}}</div>
+          <div class="cor-666 size-14 padding-0-10" v-else>顾客未及时做出评价，系统默认好评！</div>
           <div class=" padding-top-10 size-12 cor-999  padding-0-10">
-            <span>2016-06-30 10:30:20</span>&nbsp;&nbsp;颜色：黑色&nbsp;&nbsp;尺码：U1-240（正常）
+            <span
+              class="size-12">{{item.evaluationTime}}</span>&nbsp;&nbsp;颜色：{{item.productColor}}&nbsp;&nbsp;尺码：{{item.sizeName}}（{{item.sizeEvaluation == 0 ? "偏大" : (item.sizeEvaluation == 1 ? "正常" : "偏小")}}）
           </div>
         </div>
-        <div class="padding-bottom-10 border-bottom-d9d9d9">
-          <mt-cell>
-            <img class="border-radius-22" slot="icon"
-                 src="http://retail.belle.net.cn/mmp//shoe-scan/images/bigshoes.jpg" width="44" height="44">
-            <div>
-              <img width="15px" height="15px" src="http://172.17.220.193:6200/mmp/shoe-scan/images/icon_star1.png">
-              <img width="15px" height="15px" src="http://172.17.220.193:6200/mmp/shoe-scan/images/icon_star1.png">
-              <img width="15px" height="15px" src="http://172.17.220.193:6200/mmp/shoe-scan/images/icon_star1.png">
-              <img width="15px" height="15px" src="http://172.17.220.193:6200/mmp/shoe-scan/images/icon_star1.png">
-              <img width="15px" height="15px" src="http://172.17.220.193:6200/mmp/shoe-scan/images/icon_star1.png">
-            </div>
-          </mt-cell>
-          <div class="cor-666 size-14 padding-0-10">顾客未及时做出评价，系统默认好评！</div>
-          <div class=" padding-top-10 size-12 cor-999  padding-0-10">
-            <span>2016-06-30 10:30:20</span>&nbsp;&nbsp;颜色：黑色&nbsp;&nbsp;尺码：U1-240（正常）
-          </div>
-        </div>
-        <div class="padding-bottom-10 border-bottom-d9d9d9">
-          <mt-cell>
-            <img class="border-radius-22" slot="icon"
-                 src="http://retail.belle.net.cn/mmp//shoe-scan/images/bigshoes.jpg" width="44" height="44">
-            <div>
-              <img width="15px" height="15px" src="http://172.17.220.193:6200/mmp/shoe-scan/images/icon_star1.png">
-              <img width="15px" height="15px" src="http://172.17.220.193:6200/mmp/shoe-scan/images/icon_star1.png">
-              <img width="15px" height="15px" src="http://172.17.220.193:6200/mmp/shoe-scan/images/icon_star1.png">
-              <img width="15px" height="15px" src="http://172.17.220.193:6200/mmp/shoe-scan/images/icon_star1.png">
-              <img width="15px" height="15px" src="http://172.17.220.193:6200/mmp/shoe-scan/images/icon_star1.png">
-            </div>
-          </mt-cell>
-          <div class="cor-666 size-14 padding-0-10">顾客未及时做出评价，系统默认好评！</div>
-          <div class=" padding-top-10 size-12 cor-999  padding-0-10">
-            <span>2016-06-30 10:30:20</span>&nbsp;&nbsp;颜色：黑色&nbsp;&nbsp;尺码：U1-240（正常）
-          </div>
-        </div>
+        <div v-if="!comment.result  || comment.result.length==0" class="text-align-c margin-top-25 margin-bottom-10">没有数据了</div>
       </mt-tab-container-item>
     </mt-tab-container>
   </div>
@@ -90,11 +58,11 @@
   export default{
     data(){
       return {
-        selected: "1"
+        selected: "1",
       }
     },
     computed: {
-      ...mapGetters(['imgs']),
+      ...mapGetters(['imgs', 'comment']),
     },
   }
 </script>
@@ -149,9 +117,10 @@
   .border-top-d9d9d9 {
     border-top: 1px solid #d9d9d9;
   }
-  .imgs{
+
+  .imgs {
     display: block;
-    width:100%;
+    width: 100%;
   }
 </style>
 

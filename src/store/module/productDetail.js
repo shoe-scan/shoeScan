@@ -1,5 +1,13 @@
 import api from '../../api/productDetail';
 let AppConfig = JSON.parse(sessionStorage.getItem('appConfig'));
+let cartDetail = JSON.parse(localStorage.getItem('shopCar'));//获取购物车详细信息
+let carNum = 0;
+//有本地存储时获取本地存储中购物车的数量
+for (var i in cartDetail) {
+  for (var j in cartDetail[i].productList) {
+    carNum += cartDetail[i].productList[j].qty;
+  }
+}
 const state = {
   shopName: "",//门店名
   shopNo: "",//门店编号
@@ -19,7 +27,11 @@ const state = {
   isCurBarCode: AppConfig.barcode,//初始化barcode
   reCommends: [],//你可能喜欢数据
   total: 0,//换一批总数
-  fab:null,
+  fab: null,
+  cartNum: cartDetail ? carNum : 0,//购物车数量
+  showFab: false,//是否显示fab按钮
+  comment:{},//评论
+  showNotive:false,//显示到货通知
 };
 const mutations = {
   shopName(state, shopName){
@@ -97,8 +109,20 @@ const mutations = {
       state.pageNo++
     }
   },
-  fab(state,fab){
+  fab(state, fab){
     state.fab = fab;
+  },
+  cartNum(state, cartNum){
+    state.cartNum = cartNum;
+  },
+  showFab(state, showFab){
+    state.showFab = showFab;
+  },
+  comment(state,comment){
+    state.comment = comment;
+  },
+  showNotive(state,showNotive){
+    state.showNotive = showNotive;
   }
 };
 const getters = {
@@ -114,6 +138,10 @@ const getters = {
   isCurItemNo: state => state.isCurItemNo,
   isCurBarCode: state => state.isCurBarCode,
   reCommends: state => state.reCommends,
+  fab: state => state.fab,
+  showFab: state => state.showFab,
+  comment:state=>state.comment,
+  showNotive:state=>state.showNotive
 };
 const actions = {
   getProductInfo ({commit, state}, obj) {
@@ -155,7 +183,7 @@ const actions = {
       }).then(res => {
         commit("sizes", res.data || []);
         commit("curSize", obj ? res.data[0].barcode : state.AppConfig.barcode);
-        commit("isCurBarCode",obj ? res.data[0].barcode : state.AppConfig.barcode);
+        commit("isCurBarCode", obj ? res.data[0].barcode : state.AppConfig.barcode);
         resolve();
       })
     })
@@ -181,19 +209,27 @@ const actions = {
       })
     })
   },
-  getFab({commit,state}){
+  getFab({commit, state}){
     api.getFab(state.AppConfig.basePATH, {
       itemNo: state.curProductDetail.itemNo,
     }).then(res => {
-      commit("fab",res.data);
+      if (res.data && (res.data.fList || res.data.aList || res.data.bList || res.data.seriesList || res.data.brandStoryList || res.data.fPicUrl || res.data.aPicUrl || res.data.bPicUrl || res.data.seriesPicUrl || res.data.storyPicUrl)) {
+        commit("fab", res.data);
+        commit("showFab", true);
+      } else {
+        commit("showFab", false);
+      }
     })
   },
-  getComment({commit,state}){
-    api.getFab(state.AppConfig.basePATH, {
-      itemNo: state.curProductDetail.itemNo,
+  getComment({commit, state}){
+    api.getComment(state.AppConfig.basePATH, {
+      pageNo:1,
+      pageSize:10,
+      productCodes:state.curProductDetail.code,
+      starLowerLimit:3,
+      evaluationLengthLowerLimit:0,
     }).then(res => {
-      commit("fab",res.data);
-      resolve();
+      commit("comment", res.data || {});
     })
   }
 };

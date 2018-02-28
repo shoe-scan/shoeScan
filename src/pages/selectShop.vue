@@ -33,6 +33,7 @@
         this.$store.dispatch('getProductInfo').then(() => {
           that.$store.dispatch('getImgs');
           that.$store.dispatch('getFab');
+          that.$store.dispatch('getComment');
         }).then(() => {
           that.$store.dispatch('getSize');
         }).then(()=>{

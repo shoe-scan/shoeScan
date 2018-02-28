@@ -21,7 +21,7 @@
       <div v-if="curSize.availableQty<=0">
         <div class="padding-bottom-10 cor-4DC99A size-12">
           本店库存不足，可选择
-          <span class="cor-2196f3 padding-2-5 size-14 appy-border">到货通知</span>
+          <span class="cor-2196f3 padding-2-5 size-14 appy-border" @click="notive">到货通知</span>
         </div>
       </div>
       <div class="table app-pro-attr">
@@ -127,7 +127,7 @@
           this.$store.commit("isCurBarCode", this.$store.state.productDetail.sizes[0].barcode);
         });
         this.$store.dispatch("getRecommend");
-        this.$store.dispatch("getFab",item.itemNo);
+        this.$store.dispatch("getFab", item.itemNo);
       },
       selectSize(item){
         this.$store.commit("isCurBarCode", item.barcode);
@@ -150,18 +150,19 @@
       goIndex(obj){
         this.$router.push({
           name: "index",
-          query:{
-              id:obj.id
-          }
+          query: obj
         })
         let that = this;
-        this.$store.dispatch('getProductInfo',{obj}).then(() => {
+        this.$store.dispatch('getProductInfo', {obj}).then(() => {
           that.$store.dispatch('getImgs');
         }).then(() => {
-          that.$store.dispatch('getSize',{obj});
-        }).then(()=>{
+          that.$store.dispatch('getSize', {obj});
+        }).then(() => {
           that.$store.dispatch('getRecommend');
         })
+      },
+      notive(){//到货通知
+        this.$store.commit("showNotive",true);
       }
     },
   }
