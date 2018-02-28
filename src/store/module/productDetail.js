@@ -1,5 +1,13 @@
 import api from '../../api/productDetail';
 let AppConfig = JSON.parse(sessionStorage.getItem('appConfig'));
+let cartDetail = JSON.parse(localStorage.getItem('shopCar'));//获取购物车详细信息
+let carNum = 0;
+//有本地存储时获取本地存储中购物车的数量
+for (var i in cartDetail) {
+  for (var j in cartDetail[i].productList) {
+    carNum += cartDetail[i].productList[j].qty;
+  }
+}
 const state = {
   shopName: "",//门店名
   shopNo: "",//门店编号
@@ -19,7 +27,8 @@ const state = {
   isCurBarCode: AppConfig.barcode,//初始化barcode
   reCommends: [],//你可能喜欢数据
   total: 0,//换一批总数
-  fab:null,
+  fab: null,
+  cartNum: cartDetail ? carNum : 0,//购物车数量
 };
 const mutations = {
   shopName(state, shopName){
@@ -97,8 +106,11 @@ const mutations = {
       state.pageNo++
     }
   },
-  fab(state,fab){
+  fab(state, fab){
     state.fab = fab;
+  },
+  cartNum(state, cartNum){
+    state.cartNum = cartNum;
   }
 };
 const getters = {
@@ -155,7 +167,7 @@ const actions = {
       }).then(res => {
         commit("sizes", res.data || []);
         commit("curSize", obj ? res.data[0].barcode : state.AppConfig.barcode);
-        commit("isCurBarCode",obj ? res.data[0].barcode : state.AppConfig.barcode);
+        commit("isCurBarCode", obj ? res.data[0].barcode : state.AppConfig.barcode);
         resolve();
       })
     })
@@ -181,18 +193,18 @@ const actions = {
       })
     })
   },
-  getFab({commit,state}){
+  getFab({commit, state}){
     api.getFab(state.AppConfig.basePATH, {
       itemNo: state.curProductDetail.itemNo,
     }).then(res => {
-      commit("fab",res.data);
+      commit("fab", res.data);
     })
   },
-  getComment({commit,state}){
+  getComment({commit, state}){
     api.getFab(state.AppConfig.basePATH, {
       itemNo: state.curProductDetail.itemNo,
     }).then(res => {
-      commit("fab",res.data);
+      commit("fab", res.data);
       resolve();
     })
   }

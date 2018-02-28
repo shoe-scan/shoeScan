@@ -127,7 +127,7 @@
           this.$store.commit("isCurBarCode", this.$store.state.productDetail.sizes[0].barcode);
         });
         this.$store.dispatch("getRecommend");
-        this.$store.dispatch("getFab",item.itemNo);
+        this.$store.dispatch("getFab", item.itemNo);
       },
       selectSize(item){
         this.$store.commit("isCurBarCode", item.barcode);
@@ -150,16 +150,14 @@
       goIndex(obj){
         this.$router.push({
           name: "index",
-          query:{
-              id:obj.id
-          }
+          query: obj
         })
         let that = this;
-        this.$store.dispatch('getProductInfo',{obj}).then(() => {
+        this.$store.dispatch('getProductInfo', {obj}).then(() => {
           that.$store.dispatch('getImgs');
         }).then(() => {
-          that.$store.dispatch('getSize',{obj});
-        }).then(()=>{
+          that.$store.dispatch('getSize', {obj});
+        }).then(() => {
           that.$store.dispatch('getRecommend');
         })
       }

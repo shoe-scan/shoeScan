@@ -73,7 +73,9 @@ html,body{
   bottom: 0;
   z-index: 111111;
 }
-
+.position-relative{
+  position: relative;
+}
 .dis-flex {
   display: flex;
 }

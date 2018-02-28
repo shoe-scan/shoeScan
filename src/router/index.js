@@ -55,9 +55,9 @@ router.beforeEach((to, from, next) => {
   } else {
     document.title = "";
   }
-  if (to.name == "selectShop") {
+  /*if (to.name == "selectShop") {
     router.replace("/");//刷新回到首页
-  }
+  }*/
   next()
 })
 router.afterEach((to, fram, next) => {

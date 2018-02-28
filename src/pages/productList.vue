@@ -2,9 +2,8 @@
   <div class="height-100-bg-eee">
     <div class="dis-flex flex-wrap"
          v-infinite-scroll="loadMore"
-         infinite-scroll-disabled="loading"
-         infinite-scroll-distance="10">
-      <div v-for="item in productList" class="width-50 padding-0-5 box-sizing">
+         infinite-scroll-distance="0">
+      <div v-for="item in productList" class="width-50 padding-0-5 box-sizing" @click="goIndex(item)">
         <img :src="item.imageUrl" alt="">
         <div class="padding-left-20 bg-fff margin-bottom-10">
           <div class="padding-bottom-5 ">
@@ -28,43 +27,50 @@
       return {
         query: this.$route.query,
         pageNo: 1,
-        pageSize: 20,
+        pageSize: 10,
         params: {},//请求参数
-        loading:true
+        loading:false
       }
     },
     computed: {
       ...mapGetters(['productList']),
     },
     created(){
-      this.params = this.query;
-      this.params.pageNo = this.pageNo;
-      this.params.pageSize = this.pageSize;
-      this.$store.dispatch("getProductList", this.params);
+      if(!this.loading){
+        this.params = this.query;
+        this.params.pageNo = this.pageNo;
+        this.params.pageSize = this.pageSize;
+        this.$store.dispatch("getProductList", this.params);
+      }
     },
     methods: {
-      goIndex(shopNo, shopName){
-        this.$router.replace({
+      goIndex(obj){
+        this.$router.push({
           name: "index",
-          query: {
-            shopNo: shopNo,
-            shopName: shopName
-          }
+          query:obj
         })
-        this.$store.commit("shopNo", shopNo);
-        this.$store.commit("shopName", shopName);
         let that = this;
-        this.$store.dispatch('getProductInfo').then(() => {
-          that.$store.dispatch('getSize');
+        this.$store.dispatch('getProductInfo',{obj}).then(() => {
+          that.$store.dispatch('getImgs');
         }).then(() => {
+          that.$store.dispatch('getSize',{obj});
+        }).then(()=>{
           that.$store.dispatch('getRecommend');
         })
       },
       loadMore() {
-        this.params = this.query;
-        this.params.pageNo = this.pageNo++;;
-        this.params.pageSize = this.pageSize;
-        this.$store.dispatch("getProductList", this.params);
+          if(!this.loading){
+            if(this.params.pageNo*this.pageSize>=this.$store.state.productList.total){
+              return;
+            }
+            this.params.pageNo++;
+          }
+      },
+      getData(){
+        this.loading = true;
+        this.$store.dispatch("getProductList", this.params).then(function(){
+            this.loading = false;
+        });
       }
     },
   }

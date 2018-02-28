@@ -1,5 +1,5 @@
 <template>
-  <div id="index">
+  <div id="index" class="position-relative">
     <div class="padding-bottom-50 bg-fff">
       <swiper>
 
@@ -8,6 +8,9 @@
       <tabs></tabs>
     </div>
     <foot></foot>
+    <div class="cart" @click="goCart">
+      <span class="cart-num">{{cartNum}}</span>
+    </div>
   </div>
 </template>
 
@@ -24,7 +27,18 @@
         moreShops: true,
       }
     },
-    methods: {},
+    computed: {
+      cartNum(){
+        return this.$store.state.productDetail.cartNum;
+      }
+    },
+    methods: {
+      goCart(){
+        this.$router.push({
+          name: "cart",
+        })
+      },
+    },
     components: {
       Swiper,
       Foot,
@@ -33,3 +47,32 @@
     }
   }
 </script>
+<style scoped>
+  .cart {
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    left: initial;
+    right: 10px;
+    bottom: 90px;
+    border-radius: 25px;
+    background: url(./../assets/images/icon_shop.png) no-repeat;
+    background-size: 60px 60px;
+    z-index: 111;
+  }
+
+  .cart-num {
+    color: #fff;
+    width: 20px;
+    height: 20px;
+    background-color: red;
+    z-index: 1111;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    text-align: center;
+    line-height: 20px;
+    border-radius: 10px;
+    font-size: 12px;
+  }
+</style>
