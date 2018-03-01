@@ -30,7 +30,7 @@ const actions = {
     if (Object.keys(_shopCar[shopKey]['productList']).length == 0) {
       delete _shopCar[shopKey];
     }
-    // localStorage.setItem('shopCar', JSON.stringify(_shopCar));
+    localStorage.setItem('shopCar', JSON.stringify(_shopCar));
     // 更新购物车数据
     commit(TYPES.SET_SHOP_CAR_DATA, _shopCar);
   },

@@ -466,3 +466,42 @@ html, body {
   border-radius: 10px;
   text-align: center;
 }
+.qrcode-scan{
+  padding: 8px 0 5px 10px;
+}
+.qrcode-close {
+  margin: 5px auto;
+  display: block;
+  position: relative;
+  border-radius: 50px;
+  -webkit-border-radius: 50px;
+  -moz-border-radius: 50px;
+  border: 1px solid #c4c4c4;
+  width: 32px;
+  height: 32px;
+}
+.qrcode-close:before, .qrcode-close:after {
+  content: '';
+  height: 2px;
+  width: 24px;
+  display: block;
+  background: #c4c4c4;
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  position: absolute;
+  top: 15px;
+  left: 4px;
+  transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+}
+.qrcode-close:after {
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+}
