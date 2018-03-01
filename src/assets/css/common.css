@@ -46,6 +46,10 @@ time, mark, audio, video {
   text-decoration: none
 }
 
+a, input, select, textarea {
+  outline: 0;
+}
+
 html, body {
   height: 100%;
 }
@@ -80,6 +84,10 @@ html, body {
   padding-bottom: 100% !important;
 }
 
+.mint-toast {
+  z-index: 11111111 !important;
+}
+
 .footer {
   position: fixed;
   bottom: 0;
@@ -92,6 +100,10 @@ html, body {
 
 .dis-flex {
   display: flex;
+}
+
+.disabled {
+  color: #c8c8c8;
 }
 
 .flex-wrap {
@@ -212,6 +224,10 @@ html, body {
   margin: 10px 0;
 }
 
+.margin-0-20 {
+  margin: 0 20px;
+}
+
 .margin-0-30 {
   margin: 0 30px;
 }
@@ -316,8 +332,16 @@ html, body {
   padding: 15px 0;
 }
 
+.padding-15 {
+  padding: 15px;
+}
+
 .padding-2-5 {
   padding: 2px 5px;
+}
+
+.padding-5-20 {
+  padding: 5px 20px !important;
 }
 
 .padding-bottom-5 {

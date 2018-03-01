@@ -30,8 +30,9 @@ const state = {
   fab: null,
   cartNum: cartDetail ? carNum : 0,//购物车数量
   showFab: false,//是否显示fab按钮
-  comment:{},//评论
-  showNotive:false,//显示到货通知
+  comment: {},//评论
+  showNotice: false,//显示到货通知
+  showMsg: false,//是否已经开启到货通知
 };
 const mutations = {
   shopName(state, shopName){
@@ -118,11 +119,14 @@ const mutations = {
   showFab(state, showFab){
     state.showFab = showFab;
   },
-  comment(state,comment){
+  comment(state, comment){
     state.comment = comment;
   },
-  showNotive(state,showNotive){
-    state.showNotive = showNotive;
+  showNotice(state, showNotice){
+    state.showNotice = showNotice;
+  },
+  showMsg(state, showMsg){
+    state.showMsg = showMsg;
   }
 };
 const getters = {
@@ -140,8 +144,8 @@ const getters = {
   reCommends: state => state.reCommends,
   fab: state => state.fab,
   showFab: state => state.showFab,
-  comment:state=>state.comment,
-  showNotive:state=>state.showNotive
+  comment: state => state.comment,
+  showNotice: state => state.showNotice
 };
 const actions = {
   getProductInfo ({commit, state}, obj) {
@@ -223,13 +227,21 @@ const actions = {
   },
   getComment({commit, state}){
     api.getComment(state.AppConfig.basePATH, {
-      pageNo:1,
-      pageSize:10,
-      productCodes:state.curProductDetail.code,
-      starLowerLimit:3,
-      evaluationLengthLowerLimit:0,
+      pageNo: 1,
+      pageSize: 10,
+      productCodes: state.curProductDetail.code,
+      starLowerLimit: 3,
+      evaluationLengthLowerLimit: 0,
     }).then(res => {
       commit("comment", res.data || {});
+    })
+  },
+  setNotice({commit, state}, obj){
+    api.setNotice(state.AppConfig.basePATH, obj.productDetail).then(res => {
+      if (res.errorCode == 0) {
+        commit("showMsg", true);
+        obj.callback(res.data);
+      }
     })
   }
 };

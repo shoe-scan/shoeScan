@@ -1,5 +1,5 @@
 <template>
-  <div id="index" class="position-relative" :class="{overlayHidden:showNotive}">
+  <div id="index" class="position-relative" :class="{overlayHidden:showNotice}">
     <div class="padding-bottom-50 bg-fff">
       <swiper>
 
@@ -12,8 +12,8 @@
       <span class="cart-num">{{cartNum}}</span>
     </div>
     <div class="appy-fab" v-if="showFab" @click="goFab"></div>
-     <div  v-if="showNotive" class="overlay"></div>
-    <notive v-if="showNotive"></notive>
+    <div v-if="showNotice" class="overlay"></div>
+    <notice v-if="showNotice"></notice>
   </div>
 </template>
 
@@ -22,7 +22,7 @@
   import Foot from './../components/footer';//底部加入购物车和立即购买
   import ProductInfo from './../components/productInfo';//商品信息
   import Tabs from './../components/tabs';//切换图文详情和评论
-  import Notive from './../components/notive';//到货通知
+  import Notice from '../components/notice';//到货通知
   import {mapGetters} from 'vuex';
   export default {
     name: 'Index',
@@ -32,7 +32,7 @@
       }
     },
     computed: {
-      ...mapGetters(['fab','showFab','showNotive']),
+      ...mapGetters(['fab', 'showFab', 'showNotice']),
       cartNum(){
         return this.$store.state.productDetail.cartNum;
       }
@@ -44,10 +44,10 @@
         })
       },
       goFab(){
-          this.$router.push({
-            name:"fab",
-            query:this.$store.state.productDetail.fab
-          })
+        this.$router.push({
+          name: "fab",
+          query: this.$store.state.productDetail.fab
+        })
       }
     },
     components: {
@@ -55,7 +55,7 @@
       Foot,
       ProductInfo,
       Tabs,
-      Notive
+      Notice
     }
   }
 </script>
@@ -87,6 +87,7 @@
     border-radius: 10px;
     font-size: 12px;
   }
+
   .appy-fab {
     position: fixed;
     width: 30px;
@@ -96,7 +97,8 @@
     bottom: 150px;
     z-index: 111;
   }
-  .appy-fab:after{
+
+  .appy-fab:after {
     content: "";
     display: block;
     height: 100%;
@@ -105,17 +107,19 @@
     -webkit-background-size: 100% 100%;
     background-size: 100% 100%;
   }
-  .overlay{
+
+  .overlay {
     position: absolute;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,.4);
+    background: rgba(0, 0, 0, .4);
     z-index: 113000;
   }
-  .overlayHidden{
-    height:100%;
+
+  .overlayHidden {
+    height: 100%;
     overflow: hidden;
   }
 </style>

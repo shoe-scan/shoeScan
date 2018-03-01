@@ -33,7 +33,7 @@
         <div v-for="item in comment.result" class="padding-bottom-10 border-bottom-d9d9d9">
           <mt-cell :title="item.nickName">
             <img class="border-radius-22" slot="icon"
-                 :src="item.headImgUrl"  width="44" height="44">
+                 :src="item.headImgUrl" width="44" height="44">
             <div>
               <img v-for="(index) in (5-item.productStarLevel)" width="15px" height="15px"
                    src="./../assets/images/icon_star2.png">
@@ -48,7 +48,9 @@
               class="size-12">{{item.evaluationTime}}</span>&nbsp;&nbsp;颜色：{{item.productColor}}&nbsp;&nbsp;尺码：{{item.sizeName}}（{{item.sizeEvaluation == 0 ? "偏大" : (item.sizeEvaluation == 1 ? "正常" : "偏小")}}）
           </div>
         </div>
-        <div v-if="!comment.result  || comment.result.length==0" class="text-align-c margin-top-25 margin-bottom-10">没有数据了</div>
+        <div v-if="!comment.result  || comment.result.length==0" class="text-align-c margin-top-25 margin-bottom-10">
+          没有数据了
+        </div>
       </mt-tab-container-item>
     </mt-tab-container>
   </div>

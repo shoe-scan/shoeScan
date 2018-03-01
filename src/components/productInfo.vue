@@ -20,8 +20,15 @@
     <div class="padding-10-0">
       <div v-if="curSize.availableQty<=0">
         <div class="padding-bottom-10 cor-4DC99A size-12">
-          本店库存不足，可选择
-          <span class="cor-2196f3 padding-2-5 size-14 appy-border" @click="notive">到货通知</span>
+          本店库存不足，
+          <template v-if="showMsg">
+            您已开启
+          </template>
+          <template v-else>
+            可选择
+          </template>
+          <span class="cor-2196f3 padding-2-5 size-14 appy-border" :class="{opennotice:showMsg}"
+                @click="notice">到货通知</span>
         </div>
       </div>
       <div class="table app-pro-attr">
@@ -84,9 +91,13 @@
 </template>
 <script>
   import {mapGetters} from 'vuex';
+  import common from './../assets/js/common.js';
   export default{
     computed: {
       ...mapGetters(['shopName', 'productDetail', 'AppConfig', 'curProductDetail', 'sizes', 'curSize', 'qty', 'maxQty', 'isCurItemNo', 'isCurBarCode', 'reCommends']),
+      showMsg(){
+        return this.$store.state.productDetail.showMsg
+      }
     },
     methods: {
       goNearShop(){
@@ -119,6 +130,18 @@
         })
       },
       selectColor(item){
+        //是否可选择到货通知
+        if (!common.isEmptyObject(JSON.parse(sessionStorage.getItem("productDetail")))) {
+          let productDetail = JSON.parse(sessionStorage.getItem("productDetail"));
+          let pdKey = this.$store.state.productDetail.shopNo + "|" + item.code + "|" + this.$store.state.productDetail.curSize.sizeNo;
+          this.$store.commit("showMsg", false);
+          for (var i in productDetail) {
+            if (i == pdKey) {
+              this.$store.commit("showMsg", true);
+              break;
+            }
+          }
+        }
         this.$store.commit("isCurItemNo", item.itemNo);
         this.$store.commit("getCurProductDetail", item.itemNo);
         this.$store.dispatch('getImgs');
@@ -130,6 +153,18 @@
         this.$store.dispatch("getFab", item.itemNo);
       },
       selectSize(item){
+        //是否可选择到货通知
+        if (!common.isEmptyObject(JSON.parse(sessionStorage.getItem("productDetail")))) {
+          let productDetail = JSON.parse(sessionStorage.getItem("productDetail"));
+          let pdKey = this.$store.state.productDetail.shopNo + "|" + this.$store.state.productDetail.curProductDetail.code + "|" + item.sizeNo;
+          this.$store.commit("showMsg", false);
+          for (var i in productDetail) {
+            if (i == pdKey) {
+              this.$store.commit("showMsg", true);
+              break;
+            }
+          }
+        }
         this.$store.commit("isCurBarCode", item.barcode);
         this.$store.commit("curSize", item.barcode);
       },
@@ -161,8 +196,9 @@
           that.$store.dispatch('getRecommend');
         })
       },
-      notive(){//到货通知
-        this.$store.commit("showNotive",true);
+      notice(){//到货通知
+        if (this.showMsg) return;
+        this.$store.commit("showNotice", true);
       }
     },
   }
@@ -219,6 +255,11 @@
   .appy-border {
     border: 1px solid #2196f3;
     border-radius: 15px;
+  }
+
+  .opennotice {
+    color: #999 !important;
+    border-color: #ddd !important;
   }
 
   .app-pro-attr {
