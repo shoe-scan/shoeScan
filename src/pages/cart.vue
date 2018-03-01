@@ -1,6 +1,7 @@
 <template>
-  <div>
-    <div class="list-block margin-bottom-10" v-for="(shops, key) in shopCarList" :key="key">
+  <div style="width: inherit;height: inherit">
+    <div v-if="shopCarList == null" class="app-no-data"></div>
+    <div v-else class="list-block margin-bottom-10" v-for="(shops, key) in shopCarList" :key="key">
       <div class="item-bar">{{shops.shopName}}</div>
       <div class="mint-cell-wrapper padding-0" v-for="(item, key1) in shops.productList" :key="key1">
         <mt-cell-swipe class="app-cell-swipe" :right="[{
@@ -68,7 +69,7 @@
 <script>
   import {mapGetters, mapActions} from 'vuex';
   import CreateQRCode from '../assets/js/createQRCode'
-//    localStorage.setItem('shopCar', JSON.stringify({"CO12TT":{"shopName":"沈阳中兴TT","totalQty":0,"totalPrice":0,"checkedList":[],"btnDisabled":true,"checkedAll":false,"productList":{"20170606000001|240|U1":{"title":"滴胶/纺织物/牛皮革男休闲鞋","sizeNo":"240","color":"黑色","imgUrl":"https://i1.ygimg.cn/pics/tata/2017/100552778/100552778_01_mb.jpg?3","code":"AA3T3537DU1CM7","tagPrice":999,"salePrice":299,"qty":1,"brandNo":"TT01","availableQty":0,"neighbourQty":4,"isNeib":1,"brand":"他她","zone":"C","year":"2017","season":"秋"},"20170606000001|245|U1":{"title":"滴胶/纺织物/牛皮革男休闲鞋","sizeNo":"245","color":"黑色","imgUrl":"https://i1.ygimg.cn/pics/tata/2017/100552778/100552778_01_mb.jpg?3","code":"AA3T3537DU1CM7","tagPrice":999,"salePrice":299,"qty":1,"brandNo":"TT01","availableQty":0,"neighbourQty":10,"isNeib":1,"brand":"他她","zone":"C","year":"2017","season":"秋"}}},"CO54TT":{"shopName":"沈阳兴隆一百TT","totalQty":0,"totalPrice":0,"checkedList":[],"btnDisabled":true,"checkedAll":false,"productList":{"20170606000001|240|U1":{"title":"滴胶/纺织物/牛皮革男休闲鞋","sizeNo":"240","color":"黑色","imgUrl":"https://i1.ygimg.cn/pics/tata/2017/100552778/100552778_01_mb.jpg?3","code":"AA3T3537DU1CM7","tagPrice":999,"salePrice":299,"qty":1,"brandNo":"TT01","availableQty":0,"neighbourQty":4,"isNeib":1,"brand":"他她","zone":"C","year":"2017","season":"秋"},"20170606000001|245|U1":{"title":"滴胶/纺织物/牛皮革男休闲鞋","sizeNo":"245","color":"黑色","imgUrl":"https://i1.ygimg.cn/pics/tata/2017/100552778/100552778_01_mb.jpg?3","code":"AA3T3537DU1CM7","tagPrice":999,"salePrice":299,"qty":1,"brandNo":"TT01","availableQty":0,"neighbourQty":10,"isNeib":1,"brand":"他她","zone":"C","year":"2017","season":"秋"},"20170606000001|250|U1":{"title":"滴胶/纺织物/牛皮革男休闲鞋","sizeNo":"250","color":"黑色","imgUrl":"https://i1.ygimg.cn/pics/tata/2017/100552778/100552778_01_mb.jpg?3","code":"AA3T3537DU1CM7","tagPrice":999,"salePrice":299,"qty":1,"brandNo":"TT01","availableQty":0,"neighbourQty":14,"isNeib":1,"brand":"他她","zone":"C","year":"2017","season":"秋"}}}}))
+  //  localStorage.setItem('shopCar', JSON.stringify({"CO12TT":{"shopName":"沈阳中兴TT","totalQty":0,"totalPrice":0,"checkedList":[],"btnDisabled":true,"checkedAll":false,"productList":{"20170606000001|240|U1":{"title":"滴胶/纺织物/牛皮革男休闲鞋","sizeNo":"240","color":"黑色","imgUrl":"https://i1.ygimg.cn/pics/tata/2017/100552778/100552778_01_mb.jpg?3","code":"AA3T3537DU1CM7","tagPrice":999,"salePrice":299,"qty":1,"brandNo":"TT01","availableQty":0,"neighbourQty":4,"isNeib":1,"brand":"他她","zone":"C","year":"2017","season":"秋"},"20170606000001|245|U1":{"title":"滴胶/纺织物/牛皮革男休闲鞋","sizeNo":"245","color":"黑色","imgUrl":"https://i1.ygimg.cn/pics/tata/2017/100552778/100552778_01_mb.jpg?3","code":"AA3T3537DU1CM7","tagPrice":999,"salePrice":299,"qty":1,"brandNo":"TT01","availableQty":0,"neighbourQty":10,"isNeib":1,"brand":"他她","zone":"C","year":"2017","season":"秋"}}},"CO54TT":{"shopName":"沈阳兴隆一百TT","totalQty":0,"totalPrice":0,"checkedList":[],"btnDisabled":true,"checkedAll":false,"productList":{"20170606000001|240|U1":{"title":"滴胶/纺织物/牛皮革男休闲鞋","sizeNo":"240","color":"黑色","imgUrl":"https://i1.ygimg.cn/pics/tata/2017/100552778/100552778_01_mb.jpg?3","code":"AA3T3537DU1CM7","tagPrice":999,"salePrice":299,"qty":1,"brandNo":"TT01","availableQty":0,"neighbourQty":4,"isNeib":1,"brand":"他她","zone":"C","year":"2017","season":"秋"},"20170606000001|245|U1":{"title":"滴胶/纺织物/牛皮革男休闲鞋","sizeNo":"245","color":"黑色","imgUrl":"https://i1.ygimg.cn/pics/tata/2017/100552778/100552778_01_mb.jpg?3","code":"AA3T3537DU1CM7","tagPrice":999,"salePrice":299,"qty":1,"brandNo":"TT01","availableQty":0,"neighbourQty":10,"isNeib":1,"brand":"他她","zone":"C","year":"2017","season":"秋"},"20170606000001|250|U1":{"title":"滴胶/纺织物/牛皮革男休闲鞋","sizeNo":"250","color":"黑色","imgUrl":"https://i1.ygimg.cn/pics/tata/2017/100552778/100552778_01_mb.jpg?3","code":"AA3T3537DU1CM7","tagPrice":999,"salePrice":299,"qty":1,"brandNo":"TT01","availableQty":0,"neighbourQty":14,"isNeib":1,"brand":"他她","zone":"C","year":"2017","season":"秋"}}}}))
   export default{
     data(){
       return {
@@ -109,13 +110,13 @@
             dtlVo: []
           };
         for (let i = 0; i < _shopCar.checkedList.length; i++) {
-            let _product = _shopCar.productList[_shopCar.checkedList[i]];
-            _outData.dtlVo.push({
-              bNo: _product.brandNo,
-              code: _product.code,
-              size: _product.sizeNo,
-              qty: _product.qty
-            });
+          let _product = _shopCar.productList[_shopCar.checkedList[i]];
+          _outData.dtlVo.push({
+            bNo: _product.brandNo,
+            code: _product.code,
+            size: _product.sizeNo,
+            qty: _product.qty
+          });
         }
         // 创建二维码并显示
         CreateQRCode.create(_outData);

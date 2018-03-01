@@ -16,10 +16,8 @@ const actions = {
   // 获取购物车列表
   getShopCarByLocal({ commit }){
     let _data = JSON.parse(localStorage.getItem('shopCar'));
-    if (_data) {
-      // 设置购物车数据
-      commit(TYPES.SET_SHOP_CAR_DATA, _data);
-    }
+    // 设置购物车数据
+    commit(TYPES.SET_SHOP_CAR_DATA, _data);
   },
 
   // 删除商品 多个值传参使用数组形式
@@ -31,6 +29,10 @@ const actions = {
       delete _shopCar[shopKey];
     }
     localStorage.setItem('shopCar', JSON.stringify(_shopCar));
+    // 校验店铺下所有商品数据是否删除
+    if(Object.keys(_shopCar).length == 0){
+      _shopCar = null;
+    }
     // 更新购物车数据
     commit(TYPES.SET_SHOP_CAR_DATA, _shopCar);
   },
@@ -87,6 +89,7 @@ const actions = {
 const mutations = {
   // 设置购物车数据
   [TYPES.SET_SHOP_CAR_DATA](state, data){
+    console.log(data);
     state.shopCar = data;
   },
 
