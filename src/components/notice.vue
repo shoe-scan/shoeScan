@@ -120,7 +120,7 @@
 <style scoped>
   .modal {
     width: 270px;
-    position: absolute;
+    position: fixed;
     z-index: 13500;
     left: 50%;
     margin-left: -135px;

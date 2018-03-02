@@ -27,13 +27,14 @@
             <div class="appm-dt-line"></div>
           </div>
         </div>
-        <img class="imgs" v-for="item in imgs.supList" :src="item.wehcatPictureUrl" alt="">
+        <img class="imgs" v-for="item in imgs.supList" :src="item.wehcatPictureUrl | noBigImg" :onerror="noFindBigImg"
+             alt="">
       </mt-tab-container-item>
       <mt-tab-container-item id="2">
         <div v-for="item in comment.result" class="padding-bottom-10 border-bottom-d9d9d9">
           <mt-cell :title="item.nickName">
             <img class="border-radius-22" slot="icon"
-                 :src="item.headImgUrl" width="44" height="44">
+                 :src="item.headImgUrl | noHeadImg" :onerror="noFindHeadImg" width="44" height="44">
             <div>
               <img v-for="(index) in (5-item.productStarLevel)" width="15px" height="15px"
                    src="./../assets/images/icon_star2.png">
@@ -65,7 +66,21 @@
     },
     computed: {
       ...mapGetters(['imgs', 'comment']),
+      noFindBigImg(){
+        return this.$store.state.productDetail.noFindBigImg;
+      },
+      noFindHeadImg(){
+        return this.$store.state.productDetail.noFindHeadImg;
+      }
     },
+    filters: {
+      noHeadImg(value){
+        return value ? value : require("./../assets/images/icon_head.png");
+      },
+      noBigImg(value){
+        return value ? value : require("./../assets/images/bigshoes.jpg");
+      }
+    }
   }
 </script>
 <style scoped>

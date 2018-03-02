@@ -2,7 +2,7 @@
   <div class="width-height-100">
     <mt-swipe :auto="0">
       <mt-swipe-item v-for="item in imgs.mainList"  :key="item.id">
-        <img :src="item.wehcatPictureUrl" alt="">
+        <img :src="item.wehcatPictureUrl | noBigImg" :onerror="noFindBigImg" alt="">
       </mt-swipe-item>
     </mt-swipe>
   </div>
@@ -12,7 +12,15 @@
   export default{
     computed: {
       ...mapGetters(['imgs']),
+      noFindBigImg(){
+          return this.$store.state.productDetail.noFindBigImg;
+      }
     },
+    filters:{
+      noBigImg(value){
+        return value ? value : require("./../assets/images/bigshoes.jpg");
+      }
+    }
   }
 </script>
 <style scoped>

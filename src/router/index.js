@@ -64,11 +64,14 @@ router.beforeEach((to, from, next) => {
     document.title = "";
   }
   /*if (to.name == "selectShop") {
-    router.replace("/");//刷新回到首页
-  }*/
-  next()
+   router.replace("/");//刷新回到首页
+   }*/
+  next();
 })
 router.afterEach((to, fram, next) => {
+  if (to.name == "index" && fram.name == "cart") {
+    router.app.$options.store.commit("cartBackNum");//处理购物车返回首页时的数量
+  }
   window.scrollTo(0, 0)
 })
 export default router;

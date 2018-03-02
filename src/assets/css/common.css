@@ -151,7 +151,7 @@ html, body {
 }
 
 .height-26em {
-  height: 2.6rem;
+  height: 2.6em;
   line-height: 1.3em;
 }
 
@@ -395,7 +395,9 @@ html, body {
 .mint-cell-wrapper {
   background-size: 120% 0px !important;
 }
-
+.mint-indicator-mask {
+  z-index: 9999999;
+}
 .mint-cell {
   min-height: 40px;
 }

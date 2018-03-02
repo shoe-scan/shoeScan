@@ -3,10 +3,9 @@
  * author chang.yan
  * 请求接口
  */
-import Vue from 'vue'
-import VueResource from 'vue-resource';
+import axios from 'axios'
+import qs from 'qs';
 import {Indicator} from 'mint-ui';
-Vue.use(VueResource);
 export default {
   getProductInfo(basePath, params){//商品资料和价格
     return this.reqUrl(`${basePath}app/shopping/queryItemForShopCar`, params);
@@ -34,9 +33,7 @@ export default {
       spinnerType: 'fading-circle'
     });
     return new Promise((resolve, reject) => {
-      Vue.http.post(url, params, {
-        emulateJSON: true
-      }).then(function (res) {
+      axios.post(url, qs.stringify(params)).then(function (res) {
         resolve(res.data);
         Indicator.close();
       })

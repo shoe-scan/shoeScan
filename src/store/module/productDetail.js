@@ -33,6 +33,9 @@ const state = {
   comment: {},//评论
   showNotice: false,//显示到货通知
   showMsg: false,//是否已经开启到货通知
+  noFindSmallImg: 'this.src="' + require('./../../assets/images/smallshoes.jpg') + '"',//未找到鞋小图
+  noFindBigImg: 'this.src="' + require('./../../assets/images/bigshoes.jpg') + '"',//未找到鞋大图
+  noFindHeadImg: 'this.src="' + require('./../../assets/images/icon_head.png') + '"',//未找到头像
 };
 const mutations = {
   shopName(state, shopName){
@@ -116,6 +119,17 @@ const mutations = {
   cartNum(state, cartNum){
     state.cartNum = cartNum;
   },
+  cartBackNum(state){//处理购物车返回首页时的数量
+    let cartDetail = JSON.parse(localStorage.getItem('shopCar'));//获取购物车详细信息
+    let carNum = 0;
+//有本地存储时获取本地存储中购物车的数量
+    for (var i in cartDetail) {
+      for (var j in cartDetail[i].productList) {
+        carNum += cartDetail[i].productList[j].qty;
+      }
+    }
+    state.cartNum = carNum;
+  },
   showFab(state, showFab){
     state.showFab = showFab;
   },
@@ -172,6 +186,7 @@ const actions = {
         code: state.curProductDetail.code,
         brandNo: state.AppConfig.brandNo,
       }).then(res => {
+        if (res.errorCode != 0) return;
         commit("imgs", res.data || {});
         resolve();
       })

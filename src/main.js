@@ -4,7 +4,6 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import Vuex from 'vuex';
-import VueResource from 'vue-resource';
 import {
   Swipe,
   SwipeItem,
@@ -21,7 +20,6 @@ import "mint-ui/lib/style.min.css";
 import './assets/css/common.css';
 
 Vue.use(Vuex);
-Vue.use(VueResource);
 import store from './store/store';
 Vue.component(Swipe.name, Swipe);
 Vue.component(SwipeItem.name, SwipeItem);

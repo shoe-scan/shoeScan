@@ -3,18 +3,15 @@
  * author chang.yan
  * 附近门店
  */
-import Vue from 'vue'
-import VueResource from 'vue-resource';
-Vue.use(VueResource);
+import axios from 'axios'
+import qs from 'qs';
 export default {
   getNearShop(basePath, params){//获取附近门店
     return this.reqUrl(`${basePath}app/scan/queryNearShop`, params);
   },
   reqUrl(url, params){
     return new Promise((resolve, reject) => {
-      Vue.http.post(url, params, {
-        emulateJSON: true
-      }).then(function (res) {
+      axios.post(url, qs.stringify(params)).then(function (res) {
         resolve(res.data);
       })
     })

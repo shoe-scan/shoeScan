@@ -73,7 +73,7 @@
         </mt-cell>
         <div class="dis-flex">
           <div v-for="item in reCommends" class="width-33 padding-0-5" @click="goIndex(item)">
-            <img :src="item.imageUrl" alt="">
+            <img :src="item.imageUrl | noSmallImg" :onerror="noFindSmallImg" alt="">
             <div class="text-overflow-2 height-26em">
               {{item.name}}
             </div>
@@ -97,6 +97,14 @@
       ...mapGetters(['shopName', 'productDetail', 'AppConfig', 'curProductDetail', 'sizes', 'curSize', 'qty', 'maxQty', 'isCurItemNo', 'isCurBarCode', 'reCommends']),
       showMsg(){
         return this.$store.state.productDetail.showMsg
+      },
+      noFindSmallImg(){
+        return this.$store.state.productDetail.noFindSmallImg;
+      }
+    },
+    filters:{
+      noSmallImg(value){
+        return value ? value : require("./../assets/images/smallshoes.jpg");
       }
     },
     methods: {

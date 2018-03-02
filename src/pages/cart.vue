@@ -17,7 +17,7 @@
                 </span>
               </div>
               <div class="item-media padding-left-10">
-                <img :src="item.imgUrl" width="70">
+                <img :src="item.imgUrl | noSmallImg" :onerror="noFindSmallImg" width="70">
               </div>
               <div class="item-inner">
                 <div class="item-title-row ">
@@ -79,7 +79,10 @@
     computed: {
       ...mapGetters([
         'shopCarList'
-      ])
+      ]),
+      noFindSmallImg(){
+        return this.$store.state.productDetail.noFindSmallImg;
+      }
     },
     mounted(){
       // 获取购物车列表
@@ -121,7 +124,12 @@
         // 创建二维码并显示
         CreateQRCode.create(_outData);
       }
-    }
+    },
+    filters: {
+      noSmallImg(value){
+        return value ? value : require("./../assets/images/smallshoes.jpg");
+      }
+    },
   }
 </script>
 

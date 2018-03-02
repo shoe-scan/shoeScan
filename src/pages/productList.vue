@@ -1,12 +1,13 @@
 <template>
-  <div class="height-100-bg-eee">
-    <div class="dis-flex flex-wrap"
+  <div class="height-100">
+    <div class="dis-flex height-100-bg-eee flex-wrap"
          v-infinite-scroll="loadMore"
+         infinite-scroll-disabled="loading"
          infinite-scroll-distance="0">
       <div v-for="item in productList" class="width-50 padding-0-5 box-sizing" @click="goIndex(item)">
-        <img :src="item.imageUrl" alt="">
+        <img :src="item.imageUrl | noSmallImg" :onerror="noFindSmallImg" alt="">
         <div class="padding-left-20 bg-fff margin-bottom-10">
-          <div class="padding-bottom-5 ">
+          <div class="padding-bottom-5 height-26em">
             {{item.fullName}}
           </div>
           <div class="app-sale-price">
@@ -25,52 +26,57 @@
   export default {
     data(){
       return {
-        query: this.$route.query,
-        pageNo: 1,
-        pageSize: 10,
-        params: {},//请求参数
-        loading:false
+        pageSize: 20,
+        params: {//请求参数
+          pageNo: 1,
+          itemNo:this.$route.query.itemNo,
+          brandNo:this.$route.query.brandNo,
+          shopNo:this.$route.query.shopNo,
+          years:this.$route.query.years,
+          categoryNo:this.$route.query.categoryNo,
+          season:this.$route.query.season,
+          zoneNo:this.$route.query.zoneNo,
+          gender:this.$route.query.gender,
+          organTypeNo:this.$route.query.organTypeNo,
+        },
       }
     },
     computed: {
       ...mapGetters(['productList']),
+      noFindSmallImg(){
+        return this.$store.state.productDetail.noFindSmallImg;
+      }
     },
     created(){
-      if(!this.loading){
-        this.params = this.query;
-        this.params.pageNo = this.pageNo;
-        this.params.pageSize = this.pageSize;
-        this.$store.dispatch("getProductList", this.params);
-      }
     },
     methods: {
       goIndex(obj){
         this.$router.push({
           name: "index",
-          query:obj
+          query: obj
         })
         let that = this;
-        this.$store.dispatch('getProductInfo',{obj}).then(() => {
+        this.$store.dispatch('getProductInfo', {obj}).then(() => {
           that.$store.dispatch('getImgs');
         }).then(() => {
-          that.$store.dispatch('getSize',{obj});
-        }).then(()=>{
+          that.$store.dispatch('getSize', {obj});
+        }).then(() => {
           that.$store.dispatch('getRecommend');
         })
       },
       loadMore() {
-          if(!this.loading){
-            if(this.params.pageNo*this.pageSize>=this.$store.state.productList.total){
-              return;
-            }
-            this.params.pageNo++;
+       /* this.params.pageNo++;*/
+        let that = this;
+        this.$store.dispatch("getProductList", this.params).then(()=>{
+          if (that.params.pageNo * that.params.pageSize >= that.$store.state.productList.total) {
+            this.loading = true;
           }
-      },
-      getData(){
-        this.loading = true;
-        this.$store.dispatch("getProductList", this.params).then(function(){
-            this.loading = false;
         });
+      },
+    },
+    filters: {
+      noSmallImg(value){
+        return value ? value : require("./../assets/images/smallshoes.jpg");
       }
     },
   }

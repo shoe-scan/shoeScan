@@ -1,5 +1,5 @@
 <template>
-  <div id="index" class="position-relative" :class="{overlayHidden:showNotice}">
+  <div id="index" class="position-relative">
     <div class="padding-bottom-50 bg-fff">
       <swiper>
 
@@ -116,10 +116,5 @@
     height: 100%;
     background: rgba(0, 0, 0, .4);
     z-index: 113000;
-  }
-
-  .overlayHidden {
-    height: 100%;
-    overflow: hidden;
   }
 </style>

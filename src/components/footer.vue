@@ -7,6 +7,7 @@
 <script>
   import {MessageBox} from 'mint-ui';
   import common from './../assets/js/common.js';
+  import CreateQRCode from '../assets/js/createQRCode'
   export default{
     methods: {
       addCart(){
@@ -95,7 +96,21 @@
         }
       },
       buy(){
-
+        let _outData = {
+            os: 12,
+            dtlVo: []
+          },
+          curProductDetail = this.$store.state.productDetail.curProductDetail,
+          curSize = this.$store.state.productDetail.curSize,
+          qty = this.$store.state.productDetail.qty;
+        _outData.dtlVo.push({
+          bNo: curProductDetail.brandNo,
+          code: curProductDetail.code,
+          size: curSize.sizeNo,
+          qty: qty
+        });
+        // 创建二维码并显示
+        CreateQRCode.create(_outData);
       }
     }
   }

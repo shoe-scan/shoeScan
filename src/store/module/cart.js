@@ -14,14 +14,14 @@ const getters = {
 
 const actions = {
   // 获取购物车列表
-  getShopCarByLocal({ commit }){
+  getShopCarByLocal({commit}){
     let _data = JSON.parse(localStorage.getItem('shopCar'));
     // 设置购物车数据
     commit(TYPES.SET_SHOP_CAR_DATA, _data);
   },
 
   // 删除商品 多个值传参使用数组形式
-  delProduct({ commit }, [shopKey, productKey]){
+  delProduct({commit}, [shopKey, productKey]){
     let _shopCar = JSON.parse(JSON.stringify(state.shopCar));
     delete _shopCar[shopKey]['productList'][productKey];
     // 校验当前门店商品是否全部删除
@@ -30,7 +30,7 @@ const actions = {
     }
     localStorage.setItem('shopCar', JSON.stringify(_shopCar));
     // 校验店铺下所有商品数据是否删除
-    if(Object.keys(_shopCar).length == 0){
+    if (Object.keys(_shopCar).length == 0) {
       _shopCar = null;
     }
     // 更新购物车数据
@@ -38,7 +38,7 @@ const actions = {
   },
 
   // 全选、反选
-  checkedAll({ commit }, shopKey){
+  checkedAll({commit}, shopKey){
     let _shopCar = JSON.parse(JSON.stringify(state.shopCar[shopKey]));
     // 反选
     _shopCar['checkedList'] = [];
@@ -59,17 +59,17 @@ const actions = {
   },
 
   // 选择商品
-  checkedItem({ commit }, [shopKey, productKey, checked]){
+  checkedItem({commit}, [shopKey, productKey, checked]){
     let _shopCar = JSON.parse(JSON.stringify(state.shopCar[shopKey])),
       _product = _shopCar.productList[productKey];
 
     // 选中 总数、总价累加
     if (checked) {
       _shopCar.totalQty += _product.qty;
-      _shopCar.totalPrice += _product.tagPrice;
+      _shopCar.totalPrice += _product.tagPrice * _product.qty;
     } else {
       _shopCar.totalQty -= _product.qty;
-      _shopCar.totalPrice -= _product.tagPrice;
+      _shopCar.totalPrice -= _product.tagPrice * _product.qty;
     }
     // 处理按钮禁用状态
     _shopCar.btnDisabled = true;
