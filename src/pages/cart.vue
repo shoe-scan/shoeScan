@@ -96,13 +96,14 @@
       ]),
       // 选择商品
       checkItem(shopKey, productKey){
+        let _this = this;
         if (!this.isFirst)return;
         this.isFirst = false;
         let _checkbox = event.currentTarget.querySelector("input[type=checkbox]");
         setTimeout(() => {
-          this.$store.dispatch('checkedItem', [shopKey, productKey, _checkbox.checked]);
-          this.isFirst = true;
-        }, 260)
+          _this.$store.dispatch('checkedItem', [shopKey, productKey, _checkbox.checked]);
+          _this.isFirst = true;
+        }, 0)
       },
       // 生成二维码订单
       createOrder(shopKey){

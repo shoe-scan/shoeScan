@@ -22,74 +22,84 @@ const actions = {
 
   // 删除商品 多个值传参使用数组形式
   delProduct({commit}, [shopKey, productKey]){
-    let _shopCar = JSON.parse(JSON.stringify(state.shopCar));
-    delete _shopCar[shopKey]['productList'][productKey];
+    let _shopCar = JSON.parse(JSON.stringify(state.shopCar)),
+    _shopData = _shopCar[shopKey];
+    delete _shopData['productList'][productKey];
     // 校验当前门店商品是否全部删除
-    if (Object.keys(_shopCar[shopKey]['productList']).length == 0) {
+    if (Object.keys(_shopData['productList']).length == 0) {
       delete _shopCar[shopKey];
     }
-    localStorage.setItem('shopCar', JSON.stringify(_shopCar));
     // 校验店铺下所有商品数据是否删除
     if (Object.keys(_shopCar).length == 0) {
       _shopCar = null;
     }
+    // 底部数据重置
+    if(_shopCar && _shopData){
+      // 重置数据
+      _shopData['totalQty'] = 0;
+      _shopData['totalPrice'] = 0;
+      _shopData['checkedList'] = [];
+      _shopData['btnDisabled'] = true;
+      _shopData['checkedAll'] = false;
+    }
+    // 更新本地存储
+    localStorage.setItem('shopCar', JSON.stringify(_shopCar));
     // 更新购物车数据
     commit(TYPES.SET_SHOP_CAR_DATA, _shopCar);
   },
 
   // 全选、反选
   checkedAll({commit}, shopKey){
-    let _shopCar = JSON.parse(JSON.stringify(state.shopCar[shopKey]));
+    let _shopData = JSON.parse(JSON.stringify(state.shopCar[shopKey]));
     // 反选
-    _shopCar['checkedList'] = [];
-    _shopCar.btnDisabled = true;
-    _shopCar.totalQty = 0;
-    _shopCar.totalPrice = 0;
+    _shopData['checkedList'] = [];
+    _shopData.btnDisabled = true;
+    _shopData.totalQty = 0;
+    _shopData.totalPrice = 0;
     // 全选
     if (event.currentTarget.checked) {
-      for (let i in _shopCar['productList']) {
-        let _product = _shopCar['productList'][i];
-        _shopCar['checkedList'].push(i);
-        _shopCar.totalQty += _product.qty;
-        _shopCar.totalPrice += _product.qty * _product.tagPrice;
+      for (let i in _shopData['productList']) {
+        let _product = _shopData['productList'][i];
+        _shopData['checkedList'].push(i);
+        _shopData.totalQty += _product.qty;
+        _shopData.totalPrice += _product.qty * _product.tagPrice;
       }
-      _shopCar.btnDisabled = false;
+      _shopData.btnDisabled = false;
     }
-    commit(TYPES.SET_CHECKED_ALL, [shopKey, _shopCar]);
+    commit(TYPES.SET_CHECKED_ALL, [shopKey, _shopData]);
   },
 
   // 选择商品
   checkedItem({commit}, [shopKey, productKey, checked]){
-    let _shopCar = JSON.parse(JSON.stringify(state.shopCar[shopKey])),
-      _product = _shopCar.productList[productKey];
+    let _shopData = JSON.parse(JSON.stringify(state.shopCar[shopKey])),
+      _product = _shopData.productList[productKey];
 
-    // 选中 总数、总价累加
+    // 处理总数、总价加减
     if (checked) {
-      _shopCar.totalQty += _product.qty;
-      _shopCar.totalPrice += _product.tagPrice * _product.qty;
+      _shopData.totalQty += _product.qty;
+      _shopData.totalPrice += _product.tagPrice * _product.qty;
     } else {
-      _shopCar.totalQty -= _product.qty;
-      _shopCar.totalPrice -= _product.tagPrice * _product.qty;
+      _shopData.totalQty -= _product.qty;
+      _shopData.totalPrice -= _product.tagPrice * _product.qty;
     }
     // 处理按钮禁用状态
-    _shopCar.btnDisabled = true;
-    if (_shopCar.totalQty != 0) {
-      _shopCar.btnDisabled = false;
+    _shopData.btnDisabled = true;
+    if (_shopData.totalQty != 0) {
+      _shopData.btnDisabled = false;
     }
     // 处理全选状态
-    _shopCar.checkedAll = false;
-    if (_shopCar.checkedList.length == Object.keys(_shopCar.productList).length) {
-      _shopCar.checkedAll = true;
+    _shopData.checkedAll = false;
+    if (_shopData.checkedList.length == Object.keys(_shopData.productList).length) {
+      _shopData.checkedAll = true;
     }
 
-    commit(TYPES.SET_FOOTER_DATA, [shopKey, _shopCar])
+    commit(TYPES.SET_FOOTER_DATA, [shopKey, _shopData])
   }
 };
 
 const mutations = {
   // 设置购物车数据
   [TYPES.SET_SHOP_CAR_DATA](state, data){
-    console.log(data);
     state.shopCar = data;
   },
 
