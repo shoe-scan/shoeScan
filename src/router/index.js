@@ -1,11 +1,13 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Index from '../pages/index';//商品首页
-import Cart from '../pages/cart';//购物车
-import ProductList from '../pages/productList';//商品列表
-import NearShop from '../pages/nearShop';//附近门店
-import SelectShop from '../pages/selectShop';//请选择店铺
-import Fab from '../pages/fab';//特征与故事
+
+// 路由懒加载
+const Index = () => import('../pages/index'); //商品首页
+const Cart = () => import('../pages/cart'); //购物车
+const ProductList = () => import('../pages/productList'); //商品列表
+const NearShop = () => import('../pages/nearShop'); //附近门店
+const SelectShop = () => import('../pages/selectShop'); //请选择店铺
+const Fab = () => import('../pages/fab'); //特征与故事
 
 Vue.use(Router)
 const router = new Router({

@@ -17,7 +17,6 @@ import {
   Checklist
 } from 'mint-ui';
 import "mint-ui/lib/style.min.css";
-import './assets/css/common.css';
 
 Vue.use(Vuex);
 import store from './store/store';

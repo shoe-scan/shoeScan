@@ -463,7 +463,7 @@ html, body {
 .app-no-data {
   width: 100%;
   height: 100%;
-  background: url(../images/bg_no_data.png) no-repeat center center;
+  background: url(../img/bg_no_data.png) no-repeat center center;
   background-size: 270px;
 }
 
