@@ -15,6 +15,7 @@
     </div>
     <div class="load-more" v-show="showLoadMore" @click="loadMore()">加载更多...</div>
     <div class="load-more" v-show="showLoading">数据加载中...</div>
+    <div class="load-more" v-show="showLoaded">已加载完所有数据</div>
   </div>
 </template>
 <script>
@@ -24,9 +25,10 @@
       return {
         showLoadMore: false,
         showLoading: false,
+        showLoaded: false,
         params: {//请求参数
           pageNo: 1,
-          pageSize: 10,
+          pageSize: 20,
           itemNo: this.$route.query.itemNo,
           brandNo: this.$route.query.brandNo,
           shopNo: this.$route.query.shopNo,
@@ -78,8 +80,10 @@
             this.showLoading = false;
             if (that.params.pageNo * that.params.pageSize < that.$store.state.productList.total) {
               that.showLoadMore = true;
+            }else{
+              this.showLoaded = true;
             }
-          }, 100)
+          }, 500)
         });
       }
     },
