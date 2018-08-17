@@ -12,7 +12,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       "/mmp/*":{
-        target: 'http://dev.mmp.retail.belle.net.cn',
+        target: 'https://retail.belle.net.cn',
         secure: false
       }
     },

@@ -8,7 +8,7 @@
             content: '删除',
             handler: ()=>delProduct([key,key1])
         }]">
-          <div class="mint-cell-title" @click="checkItem(key, key1)">
+          <div class="mint-cell-title mint-cell-reset" @click="checkItem(key, key1)">
             <label class="mint-checklist-label item-content padding-0">
               <div class="item-media">
                 <span class="mint-checkbox">
@@ -384,5 +384,8 @@
   .list-block .swipeout-actions-left a:after {
     right: 100%;
     margin-right: -1px
+  }
+  .mint-cell-reset /deep/ .mint-checklist-label{
+    padding-left:0;
   }
 </style>

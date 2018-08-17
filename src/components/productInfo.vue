@@ -45,8 +45,8 @@
           <span>尺码</span>
         </div>
         <div class="table-cell app-item appy-color">
-          <span v-for="item in sizes" @click="selectSize(item)"
-                :class="{active:item.barcode == isCurBarCode}">{{item.sizeNo}}</span>
+          <span v-for="(item,index) in sizes" @click="selectSize(item,index)"
+                :class="index==isCurSizeIndex?'active':''">{{item.sizeNo}}</span>
         </div>
       </div>
       <div class="table app-pro-attr app-pro-num">
@@ -94,7 +94,7 @@
   import common from './../assets/js/common.js';
   export default{
     computed: {
-      ...mapGetters(['shopName', 'productDetail', 'AppConfig', 'curProductDetail', 'sizes', 'curSize', 'qty', 'maxQty', 'isCurItemNo', 'isCurBarCode', 'reCommends']),
+      ...mapGetters(['shopName', 'productDetail', 'AppConfig', 'curProductDetail', 'sizes', 'curSize', 'qty', 'maxQty', 'isCurItemNo', 'isCurSizeIndex', 'reCommends']),
       showMsg(){
         return this.$store.state.productDetail.showMsg
       },
@@ -102,12 +102,13 @@
         return this.$store.state.productDetail.noFindSmallImg;
       }
     },
-    filters:{
+    filters: {
       noSmallImg(value){
         return value ? value : require("./../assets/images/smallshoes.jpg");
       }
     },
     methods: {
+      //进入附近门店
       goNearShop(){
         this.$router.push({
           name: "nearShop",
@@ -121,6 +122,7 @@
           }
         })
       },
+      //进入商品详情
       goProductList(){
         this.$router.push({
           name: "productList",
@@ -137,6 +139,7 @@
           }
         })
       },
+      //选择颜色
       selectColor(item){
         //是否可选择到货通知
         if (!common.isEmptyObject(JSON.parse(sessionStorage.getItem("productDetail")))) {
@@ -154,13 +157,14 @@
         this.$store.commit("getCurProductDetail", item.itemNo);
         this.$store.dispatch('getImgs');
         this.$store.dispatch('getSize').then(() => {
-          this.$store.commit("curSize", this.$store.state.productDetail.sizes[0].barcode);
-          this.$store.commit("isCurBarCode", this.$store.state.productDetail.sizes[0].barcode);
+          this.$store.commit("curSize", 0);
+          this.$store.commit("isCurSizeIndex", 0);
         });
         this.$store.dispatch("getRecommend");
         this.$store.dispatch("getFab", item.itemNo);
       },
-      selectSize(item){
+      //选择尺码
+      selectSize(item,index){
         //是否可选择到货通知
         if (!common.isEmptyObject(JSON.parse(sessionStorage.getItem("productDetail")))) {
           let productDetail = JSON.parse(sessionStorage.getItem("productDetail"));
@@ -173,15 +177,18 @@
             }
           }
         }
-        this.$store.commit("isCurBarCode", item.barcode);
-        this.$store.commit("curSize", item.barcode);
+        this.$store.commit("isCurSizeIndex", index);
+        this.$store.commit("curSize", index);
       },
+      //数量加
       add(qty){
         this.$store.commit("addQty", qty);
       },
+      //数量减
       minus(qty){
         this.$store.commit("minusQty", qty);
       },
+      //换一批
       hyp(){//换一批
         if (this.$store.state.productDetail.pageNo * 3 < this.$store.state.productDetail.total) {
           this.$store.commit("addPageNo");
@@ -204,7 +211,8 @@
           that.$store.dispatch('getRecommend');
         })
       },
-      notice(){//到货通知
+      //到货通知
+      notice(){
         if (this.showMsg) return;
         this.$store.commit("showNotice", true);
       }

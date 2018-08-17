@@ -24,7 +24,7 @@ const state = {
   maxQty: 0,
   pageNo: 1,//换一批分页
   isCurItemNo: AppConfig.itemNo,//初始化itemNo,
-  isCurBarCode: AppConfig.barcode,//初始化barcode
+  isCurSizeIndex: 0,//默认选中第一个尺码
   reCommends: [],//你可能喜欢数据
   total: 0,//换一批总数
   fab: null,
@@ -65,12 +65,10 @@ const mutations = {
   sizes(state, sizes){
     state.sizes = sizes
   },
-  curSize(state, barcode){
-    state.sizes.filter(function (product) {
-      if (barcode == product.barcode) {
-        state.curSize = product;
-      }
-    })
+  //当前选中的颜色
+  curSize(state, index){
+    console.log('index',index)
+    state.curSize = state.sizes[index];
   },
   qty(state, qty){
     state.qty = qty;
@@ -97,8 +95,8 @@ const mutations = {
   isCurItemNo(state, isCurItemNo){
     state.isCurItemNo = isCurItemNo;
   },
-  isCurBarCode(state, isCurBarCode){
-    state.isCurBarCode = isCurBarCode;
+  isCurSizeIndex(state, isCurSizeIndex){
+    state.isCurSizeIndex = isCurSizeIndex;
   },
   reCommends(state, reCommends){
     state.reCommends = reCommends;
@@ -154,7 +152,7 @@ const getters = {
   qty: state => state.qty,
   maxQty: state => state.curSize.availableQty > state.curSize.neighbourQty ? state.curSize.availableQty : state.curSize.neighbourQty,
   isCurItemNo: state => state.isCurItemNo,
-  isCurBarCode: state => state.isCurBarCode,
+  isCurSizeIndex: state => state.isCurSizeIndex,
   reCommends: state => state.reCommends,
   fab: state => state.fab,
   showFab: state => state.showFab,
@@ -201,8 +199,8 @@ const actions = {
         organTypeNo: state.productInfo.organTypeNo
       }).then(res => {
         commit("sizes", res.data || []);
-        commit("curSize", obj ? res.data[0].barcode : state.AppConfig.barcode);
-        commit("isCurBarCode", obj ? res.data[0].barcode : state.AppConfig.barcode);
+        commit("curSize",state.isCurSizeIndex);
+        commit("isCurSizeIndex", 0);
         resolve();
       })
     })

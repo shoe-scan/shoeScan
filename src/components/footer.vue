@@ -109,6 +109,15 @@
           size: curSize.sizeNo,
           qty: qty
         });
+        let maxValue = curSize.availableQty>=curSize.neighbourQty?curSize.availableQty:curSize.neighbourQty;
+        if (qty > maxValue) {
+          MessageBox('提示', '库存不足');
+          return;
+        }
+        if(!this.$store.isCurItemNo){
+          MessageBox('提示', '颜色不能为空');
+          return;
+        }
         // 创建二维码并显示
         CreateQRCode.create(_outData);
       }
