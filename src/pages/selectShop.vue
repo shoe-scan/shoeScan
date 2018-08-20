@@ -33,7 +33,9 @@
         this.$store.dispatch('getProductInfo').then(() => {
           that.$store.dispatch('getImgs');
           that.$store.dispatch('getFab');
-          that.$store.dispatch('getComment');
+          this.$store.commit('commentPageNoAdd',1);
+          this.$store.commit('showLoaded',false);
+          that.$store.dispatch('getComment')
         }).then(() => {
           that.$store.dispatch('getSize');
         }).then(()=>{

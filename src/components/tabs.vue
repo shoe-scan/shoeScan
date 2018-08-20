@@ -49,9 +49,9 @@
               class="size-12">{{item.evaluationTime}}</span>&nbsp;&nbsp;颜色：{{item.productColor}}&nbsp;&nbsp;尺码：{{item.sizeName}}（{{item.sizeEvaluation == 0 ? "偏大" : (item.sizeEvaluation == 1 ? "正常" : "偏小")}}）
           </div>
         </div>
-        <div v-if="!comment.result  || comment.result.length==0" class="text-align-c margin-top-25 margin-bottom-10">
-          没有数据了
-        </div>
+        <div class="text-align-c margin-top-25 margin-bottom-10" v-show="showLoadMore" @click="loadMore()">加载更多...</div>
+        <div class="text-align-c margin-top-25 margin-bottom-10" v-show="showLoading">数据加载中...</div>
+        <div class="text-align-c margin-top-25 margin-bottom-10" v-show="showLoaded">已加载完所有数据</div>
       </mt-tab-container-item>
     </mt-tab-container>
   </div>
@@ -71,6 +71,15 @@
       },
       noFindHeadImg(){
         return this.$store.state.productDetail.noFindHeadImg;
+      },
+      showLoadMore(){
+        return this.$store.state.productDetail.showLoadMore;
+      },
+      showLoading(){
+        return this.$store.state.productDetail.showLoading;
+      },
+      showLoaded(){
+        return this.$store.state.productDetail.showLoaded;
       }
     },
     filters: {
@@ -80,6 +89,25 @@
       noBigImg(value){
         return value ? value : require("./../assets/images/bigshoes.jpg");
       }
+    },
+    methods: {
+      //加载更多
+      loadMore() {
+        this.$store.commit("showLoadMore", false);
+        this.$store.commit("showLoading", true);
+        this.$store.commit("commentPageNoAdd");
+        this.$store.dispatch("getComment").then(() => {
+          setTimeout(() => {
+            this.$store.commit("showLoading", false);
+            if (this.$store.state.productDetail.commentPageNo * 10 < this.$store.state.productDetail.commentTotal) {
+              this.$store.commit("showLoadMore", true);
+            } else {
+              this.$store.commit("showLoaded", true);
+              this.$store.commit("showLoadMore", false);
+            }
+          }, 200)
+        });
+      },
     }
   }
 </script>

@@ -156,6 +156,9 @@
         this.$store.commit("isCurItemNo", item.itemNo);
         this.$store.commit("getCurProductDetail", item.itemNo);
         this.$store.dispatch('getImgs');
+        this.$store.commit('commentPageNoAdd',1);
+        this.$store.commit('showLoaded',false);
+        this.$store.dispatch('getComment');
         this.$store.dispatch('getSize').then(() => {
           this.$store.commit("curSize", 0);
           this.$store.commit("isCurSizeIndex", 0);
@@ -189,7 +192,7 @@
         this.$store.commit("minusQty", qty);
       },
       //换一批
-      hyp(){//换一批
+      hyp(){
         if (this.$store.state.productDetail.pageNo * 3 < this.$store.state.productDetail.total) {
           this.$store.commit("addPageNo");
         } else {
@@ -205,6 +208,10 @@
         let that = this;
         this.$store.dispatch('getProductInfo', {obj}).then(() => {
           that.$store.dispatch('getImgs');
+          that.$store.dispatch('getFab');
+          this.$store.commit('commentPageNoAdd',1);
+          this.$store.commit('showLoaded',false);
+          that.$store.dispatch('getComment');
         }).then(() => {
           that.$store.dispatch('getSize', {obj});
         }).then(() => {

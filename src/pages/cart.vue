@@ -3,7 +3,7 @@
     <div v-if="shopCarList == null" class="app-no-data"></div>
     <div v-else class="list-block margin-bottom-10" v-for="(shops, key) in shopCarList" :key="key">
       <div class="item-bar">{{shops.shopName}}</div>
-      <div class="mint-cell-wrapper padding-0" v-for="(item, key1) in shops.productList" :key="key1">
+      <div class="mint-cell-wrapper mint-cell-wrapper-reset" v-for="(item, key1) in shops.productList" :key="key1">
         <mt-cell-swipe class="app-cell-swipe" :right="[{
             content: '删除',
             handler: ()=>delProduct([key,key1])
@@ -385,7 +385,23 @@
     right: 100%;
     margin-right: -1px
   }
-  .mint-cell-reset /deep/ .mint-checklist-label{
-    padding-left:0;
+
+  .mint-cell-reset /deep/ .mint-checklist-label {
+    padding-left: 0;
+  }
+
+  .mint-cell-wrapper.mint-cell-wrapper-reset {
+    padding-right: 0;
+  }
+
+  .mint-cell-wrapper-reset /deep/ .mint-cell-swipe-buttongroup {
+    display: flex;
+    align-items: center;
+    background: #f00;
+  }
+
+  .mint-cell-wrapper-reset /deep/ .mint-cell-swipe-buttongroup .mint-cell-swipe-button {
+    height: initial !important;
+    line-height: initial !important;
   }
 </style>

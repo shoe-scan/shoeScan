@@ -1,6 +1,6 @@
 <template>
   <div class="width-height-100">
-    <mt-swipe :auto="0">
+    <mt-swipe class="mt-swipe-reset" :auto="0">
       <mt-swipe-item v-for="item in imgs.mainList"  :key="item.id">
         <img :src="item.wehcatPictureUrl | noBigImg" :onerror="noFindBigImg" alt="">
       </mt-swipe-item>
@@ -33,5 +33,8 @@
   img {
     display: block;
     width: 100%;
+  }
+  .mt-swipe-reset /deep/ .mint-swipe-indicator.is-active {
+    background: #46bfba;
   }
 </style>

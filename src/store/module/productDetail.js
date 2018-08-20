@@ -23,6 +23,11 @@ const state = {
   qty: 1,
   maxQty: 0,
   pageNo: 1,//换一批分页
+  commentPageNo: 1,//评论分页
+  showLoadMore: false,//评论显示加载更多
+  showLoading: false,
+  showLoaded: false,
+  commentTotal: 0,//评论总条数
   isCurItemNo: AppConfig.itemNo,//初始化itemNo,
   isCurSizeIndex: 0,//默认选中第一个尺码
   reCommends: [],//你可能喜欢数据
@@ -67,7 +72,7 @@ const mutations = {
   },
   //当前选中的颜色
   curSize(state, index){
-    console.log('index',index)
+    console.log('index', index)
     state.curSize = state.sizes[index];
   },
   qty(state, qty){
@@ -104,12 +109,34 @@ const mutations = {
   total(state, total){
     state.total = total;
   },
+  //换一批pageNo加1
   addPageNo(state, n){
     if (n) {
       state.pageNo = 1
     } else {
       state.pageNo++
     }
+  },
+  //评论数据pageNo+1
+  commentPageNoAdd(state, n){
+    if (n) {
+      state.commentPageNo = 1
+    } else {
+      state.commentPageNo++
+    }
+  },
+  //评论总条数
+  commentTotal(state, total){
+    state.commentTotal = total
+  },
+  showLoadMore(state, flag){
+    state.showLoadMore = flag;
+  },
+  showLoading(state, flag){
+    state.showLoading = flag;
+  },
+  showLoaded(state, flag){
+    state.showLoaded = flag;
   },
   fab(state, fab){
     state.fab = fab;
@@ -176,6 +203,7 @@ const actions = {
       })
     })
   },
+  //获取图文信息
   getImgs({commit, state}){
     return new Promise((resolve) => {
       api.getImgs(state.AppConfig.basePATH, {
@@ -190,6 +218,7 @@ const actions = {
       })
     })
   },
+  //获取尺码信息
   getSize({commit, state}, obj){
     return new Promise((resolve) => {
       api.getSize(state.AppConfig.basePATH, {
@@ -199,7 +228,7 @@ const actions = {
         organTypeNo: state.productInfo.organTypeNo
       }).then(res => {
         commit("sizes", res.data || []);
-        commit("curSize",state.isCurSizeIndex);
+        commit("curSize", state.isCurSizeIndex);
         commit("isCurSizeIndex", 0);
         resolve();
       })
@@ -226,6 +255,7 @@ const actions = {
       })
     })
   },
+  //特征与故事
   getFab({commit, state}){
     api.getFab(state.AppConfig.basePATH, {
       itemNo: state.curProductDetail.itemNo,
@@ -238,17 +268,30 @@ const actions = {
       }
     })
   },
+  //获取评论数据
   getComment({commit, state}){
     api.getComment(state.AppConfig.basePATH, {
-      pageNo: 1,
+      pageNo: state.commentPageNo,
       pageSize: 10,
       productCodes: state.curProductDetail.code,
       starLowerLimit: 3,
       evaluationLengthLowerLimit: 0,
     }).then(res => {
-      commit("comment", res.data || {});
+      //第一页
+      if (state.commentPageNo == 1) {
+        commit("comment", res.data || {});
+        commit("commentTotal", state.comment.total || 0);
+        if (state.comment.result && state.comment.result.length > 0 && state.comment.result.length < state.commentTotal) {
+          commit("showLoadMore", true);
+        } else {
+          commit("showLoaded", true);
+        }
+      } else {
+        commit("comment", {result: state.comment.result.concat(res.data.result || []), total: state.commentTotal});
+      }
     })
   },
+  //到货通知
   setNotice({commit, state}, obj){
     api.setNotice(state.AppConfig.basePATH, obj.productDetail).then(res => {
       if (res.errorCode == 0) {

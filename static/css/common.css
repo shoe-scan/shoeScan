@@ -456,10 +456,6 @@ html, body {
   opacity: 0.5;
 }
 
-.mint-swipe-indicator.is-active {
-  background: #46bfba;
-}
-
 .app-no-data {
   width: 100%;
   height: 100%;
