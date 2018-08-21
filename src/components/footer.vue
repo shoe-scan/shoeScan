@@ -1,7 +1,10 @@
 <template>
   <div class="footer dis-flex width-100 height-50p line-height-50 cor-fff">
-    <div class="flex-1 text-align-c bg-ff9402 size-17" @click="addCart">加入购物车</div>
-    <div class="flex-1 text-align-c bg-f40 size-17" @click="buy">立即购买</div>
+    <template v-if="!isYG">
+      <div class="flex-1 text-align-c bg-ff9402 size-17" @click="addCart">加入购物车</div>
+      <div class="flex-1 text-align-c bg-f40 size-17" @click="buy">立即购买</div>
+    </template>
+    <div class="flex-1 text-align-c bg-f40 size-17" @click="goShopping" v-else>进入商城</div>
   </div>
 </template>
 <script>
@@ -9,7 +12,16 @@
   import common from './../assets/js/common.js';
   import CreateQRCode from '../assets/js/createQRCode'
   export default{
+    computed: {
+      isYG(){
+        return this.$store.state.productDetail.isYG
+      },
+      AppConfig(){
+        return this.$store.state.productDetail.AppConfig
+      }
+    },
     methods: {
+      //加入购物车
       addCart(){
         let curProductDetail = this.$store.state.productDetail.curProductDetail,
           curSize = this.$store.state.productDetail.curSize;
@@ -95,6 +107,7 @@
           MessageBox('提示', '颜色不能为空');
         }
       },
+      //立即购买
       buy(){
         let _outData = {
             os: 12,
@@ -109,17 +122,21 @@
           size: curSize.sizeNo,
           qty: qty
         });
-        let maxValue = curSize.availableQty>=curSize.neighbourQty?curSize.availableQty:curSize.neighbourQty;
+        let maxValue = curSize.availableQty >= curSize.neighbourQty ? curSize.availableQty : curSize.neighbourQty;
         if (qty > maxValue) {
           MessageBox('提示', '库存不足');
           return;
         }
-        if(!this.$store.isCurItemNo){
+        if (!this.$store.state.productDetail.isCurItemNo) {
           MessageBox('提示', '颜色不能为空');
           return;
         }
         // 创建二维码并显示
         CreateQRCode.create(_outData);
+      },
+      //进入商城
+      goShopping(){
+        window.location.href = 'http://m.yougou.com/jump/ydt.sc?itemNo=' + this.AppConfig.itemNo + '&itemCode=' + this.AppConfig.code;
       }
     }
   }

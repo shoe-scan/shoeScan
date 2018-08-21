@@ -5,10 +5,10 @@
 
       </swiper>
       <productInfo></productInfo>
-      <tabs></tabs>
+      <tabs v-if="!isYG"></tabs>
     </div>
     <foot></foot>
-    <div class="cart" @click="goCart">
+    <div class="cart" v-if="!isYG" @click="goCart">
       <span class="cart-num">{{cartNum}}</span>
     </div>
     <div class="appy-fab" v-if="showFab" @click="goFab"></div>
@@ -35,7 +35,10 @@
       ...mapGetters(['fab', 'showFab', 'showNotice']),
       cartNum(){
         return this.$store.state.productDetail.cartNum;
-      }
+      },
+      isYG(){
+        return this.$store.state.productDetail.isYG
+      },
     },
     methods: {
       goCart(){

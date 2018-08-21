@@ -1,4 +1,5 @@
 import nearshop from '../../api/nearShop';
+import {Indicator,MessageBox} from 'mint-ui'
 let AppConfig = JSON.parse(sessionStorage.getItem('appConfig'));
 const state = {
   showNearShop: false,//是否显示占位图
@@ -20,6 +21,11 @@ const actions = {
   getNearShop({commit, state}, params){
     state.showNearShop = false;
     nearshop.getNearShop(state.basePath, params).then(res => {
+      if(res.errorCode!=0){
+        Indicator.close();
+        MessageBox('提示',res.errorMessage);
+        return;
+      }
       commit("showNearShop");
       commit("nearShopList", res.data || [])
     })

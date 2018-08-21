@@ -15,7 +15,6 @@ import {
   TabItem,
   Badge,
   Checklist,
-  InfiniteScroll
 } from 'mint-ui';
 import "mint-ui/lib/style.min.css";
 
@@ -31,7 +30,6 @@ Vue.component(Navbar.name, Navbar);
 Vue.component(TabItem.name, TabItem);
 Vue.component(Badge.name, Badge);
 Vue.component(Checklist.name, Checklist);
-Vue.use(InfiniteScroll)
 Vue.config.productionTip = false;
 new Vue({
   el: '#app',

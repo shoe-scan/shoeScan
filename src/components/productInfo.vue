@@ -7,18 +7,18 @@
     <div class="app-underline">
       <span class="app-sale-price">¥{{curProductDetail.tagPrice}}</span>&nbsp;
       <div class="padding-bottom-10">
-        <span class="cor-666">价格仅供参考，以门店开单价格为准</span>
+        <span class="cor-666">价格仅供参考，{{!isYG?'以门店开单价格为准':'以结算价格为准'}}</span>
       </div>
     </div>
     <div class="app-underline padding-10-0 cor-666">
-      <div>当前门店：{{shopName}}</div>
-      <div>
+      <div>当前门店：{{!isYG?shopName:'优购商城'}}</div>
+      <div v-if="!isYG">
         本店<span class="cor-ef0717">{{curSize.availableQty}}</span>件&nbsp;&nbsp;&nbsp;&nbsp;
         邻店<span class="cor-ef0717">{{curSize.neighbourQty}}</span>件
       </div>
     </div>
     <div class="padding-10-0">
-      <div v-if="curSize.availableQty<=0">
+      <div v-if="curSize.availableQty<=0 && !isYG">
         <div class="padding-bottom-10 cor-4DC99A size-12">
           本店库存不足，
           <template v-if="showMsg">
@@ -40,7 +40,7 @@
                 :class="{active:item.itemNo==isCurItemNo}">{{item.colorName}}</span>
         </div>
       </div>
-      <div class="table app-pro-attr">
+      <div class="table app-pro-attr" v-if="!isYG">
         <div class="table-cell app-title">
           <span>尺码</span>
         </div>
@@ -49,7 +49,7 @@
                 :class="index==isCurSizeIndex?'active':''">{{item.sizeNo}}</span>
         </div>
       </div>
-      <div class="table app-pro-attr app-pro-num">
+      <div class="table app-pro-attr app-pro-num" v-if="!isYG">
         <div class="table-cell app-title">
           <span>数量</span>
         </div>
@@ -60,12 +60,12 @@
                 :class="{disabled:qty>=maxQty}">+</span>
         </div>
       </div>
-      <mt-cell class="border-top-d9d9d9"
+      <mt-cell v-if="!isYG" class="border-top-d9d9d9"
                title="附近门店"
                is-link
                @click.native="goNearShop">
       </mt-cell>
-      <template v-if="reCommends.length>0">
+      <template v-if="reCommends.length>0 && !isYG">
         <mt-cell class="border-top-d9d9d9"
                  title="你可能喜欢"
                  is-link
@@ -100,7 +100,10 @@
       },
       noFindSmallImg(){
         return this.$store.state.productDetail.noFindSmallImg;
-      }
+      },
+      isYG(){
+        return this.$store.state.productDetail.isYG
+      },
     },
     filters: {
       noSmallImg(value){
@@ -211,6 +214,7 @@
           that.$store.dispatch('getFab');
           this.$store.commit('commentPageNoAdd',1);
           this.$store.commit('showLoaded',false);
+          this.$store.commit('showLoadMore',false);
           that.$store.dispatch('getComment');
         }).then(() => {
           that.$store.dispatch('getSize', {obj});

@@ -3,6 +3,7 @@ let AppConfig = JSON.parse(sessionStorage.getItem('appConfig'));
 let cartDetail = JSON.parse(localStorage.getItem('shopCar'));//获取购物车详细信息
 let carNum = 0;
 //有本地存储时获取本地存储中购物车的数量
+import {Indicator,MessageBox} from 'mint-ui'
 for (var i in cartDetail) {
   for (var j in cartDetail[i].productList) {
     carNum += cartDetail[i].productList[j].qty;
@@ -38,6 +39,7 @@ const state = {
   comment: {},//评论
   showNotice: false,//显示到货通知
   showMsg: false,//是否已经开启到货通知
+  isYG:false,//优购商品
   noFindSmallImg: 'this.src="' + require('./../../assets/images/smallshoes.jpg') + '"',//未找到鞋小图
   noFindBigImg: 'this.src="' + require('./../../assets/images/bigshoes.jpg') + '"',//未找到鞋大图
   noFindHeadImg: 'this.src="' + require('./../../assets/images/icon_head.png') + '"',//未找到头像
@@ -166,6 +168,10 @@ const mutations = {
   },
   showMsg(state, showMsg){
     state.showMsg = showMsg;
+  },
+  //优购商品为true
+  isYG(state,flag){
+    state.isYG = flag;
   }
 };
 const getters = {
@@ -196,6 +202,11 @@ const actions = {
         zoneNo: state.productInfo.zoneNo,
         brandNo: state.AppConfig.brandNo
       }).then(res => {
+        if(res.errorCode!=0){
+          Indicator.close();
+          MessageBox('提示',res.errorMessage);
+          return;
+        }
         commit("productDetail", res.data || []);
         commit("getCurProductDetail", obj && obj.obj ? obj.obj.itemNo : state.AppConfig.itemNo);
         commit("isCurItemNo", obj && obj.obj ? obj.obj.itemNo : AppConfig.itemNo);
@@ -212,7 +223,11 @@ const actions = {
         code: state.curProductDetail.code,
         brandNo: state.AppConfig.brandNo,
       }).then(res => {
-        if (res.errorCode != 0) return;
+        if(res.errorCode!=0){
+          Indicator.close();
+          MessageBox('提示',res.errorMessage);
+          return;
+        }
         commit("imgs", res.data || {});
         resolve();
       })
@@ -227,6 +242,11 @@ const actions = {
         shardingFlag: state.productInfo.shardingFlag,
         organTypeNo: state.productInfo.organTypeNo
       }).then(res => {
+        if(res.errorCode!=0){
+          Indicator.close();
+          MessageBox('提示',res.errorMessage);
+          return;
+        }
         commit("sizes", res.data || []);
         commit("curSize", state.isCurSizeIndex);
         commit("isCurSizeIndex", 0);
@@ -249,6 +269,11 @@ const actions = {
         pageNo: state.pageNo,
         pageSize: 3,
       }).then(res => {
+        if(res.errorCode!=0){
+          Indicator.close();
+          MessageBox('提示',res.errorMessage);
+          return;
+        }
         commit("reCommends", res.data.result || []);
         commit("total", res.data.total);
         resolve();
@@ -260,6 +285,11 @@ const actions = {
     api.getFab(state.AppConfig.basePATH, {
       itemNo: state.curProductDetail.itemNo,
     }).then(res => {
+      if(res.errorCode!=0){
+        Indicator.close();
+        MessageBox('提示',res.errorMessage);
+        return;
+      }
       if (res.data && (res.data.fList || res.data.aList || res.data.bList || res.data.seriesList || res.data.brandStoryList || res.data.fPicUrl || res.data.aPicUrl || res.data.bPicUrl || res.data.seriesPicUrl || res.data.storyPicUrl)) {
         commit("fab", res.data);
         commit("showFab", true);
@@ -277,6 +307,11 @@ const actions = {
       starLowerLimit: 3,
       evaluationLengthLowerLimit: 0,
     }).then(res => {
+      if(res.errorCode!=0){
+        Indicator.close();
+        MessageBox('提示',res.errorMessage);
+        return;
+      }
       //第一页
       if (state.commentPageNo == 1) {
         commit("comment", res.data || {});
@@ -294,10 +329,13 @@ const actions = {
   //到货通知
   setNotice({commit, state}, obj){
     api.setNotice(state.AppConfig.basePATH, obj.productDetail).then(res => {
-      if (res.errorCode == 0) {
-        commit("showMsg", true);
-        obj.callback(res.data);
+      if(res.errorCode!=0){
+        Indicator.close();
+        MessageBox('提示',res.errorMessage);
+        return;
       }
+      commit("showMsg", true);
+      obj.callback(res.data);
     })
   }
 };

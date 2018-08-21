@@ -11,8 +11,10 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      "/mmp/*":{
-        target: 'https://retail.belle.net.cn',
+      "/mmp/*": {
+        target: 'https://retail.belle.net.cn',//生产
+        //target: 'http://retail-test.belle.net.cn',//测试
+        //target: 'http://172.17.220.193',//开发
         secure: false
       }
     },

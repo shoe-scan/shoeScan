@@ -74,11 +74,13 @@
         })
         this.$store.commit("shopNo", shopNo);
         this.$store.commit("shopName", shopName);
-        let that = this;
         this.$store.dispatch('getProductInfo').then(() => {
-          that.$store.dispatch('getSize');
+          this.$store.dispatch('getSize').then(() => {
+            this.$store.commit("curSize", 0);
+            this.$store.commit("isCurSizeIndex", 0);
+          });
         }).then(() => {
-          that.$store.dispatch('getRecommend');
+          this.$store.dispatch('getRecommend');
         })
       }
     },
